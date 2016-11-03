@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Assembler">
+      <UniqueIdentifier>{df3fcd04-a01d-47b7-88a9-831c56335bc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assembler\x86">
+      <UniqueIdentifier>{24abdd39-01b7-43fb-bdd1-1ae9103dfd40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assembler\neon">
+      <UniqueIdentifier>{b254e4b2-5de3-4727-add4-f77f906f49ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assembler\x86_AVX2">
+      <UniqueIdentifier>{34ca3d04-37c0-4629-a2ec-7f06ca00888b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\source\decore\block_info.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\ComAdaptiveLoopFilter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\inter-prediction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\intra-prediction.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\loop-filter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\transform.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\common.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_inter_pred.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\biaridecod.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\bitstream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\common_tables.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_pixel.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\pixel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_deblock.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\threadpool.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\win32thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_dct.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_alf.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_sao.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\neon\android.c">
+      <Filter>Assembler\neon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_pixel_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_sao_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_alf_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_inter-pred_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_deblock_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86\intrinsic_intra-pred.c">
+      <Filter>Assembler\x86</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\neon\android_sao.c">
+      <Filter>Assembler\neon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_dct_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\decore\x86_256\intrinsic_intra_pred_256.c">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\decore\block_info.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\ComAdaptiveLoopFilter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\commonStructures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\commonVariables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\defines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\inter-prediction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\intra-prediction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\loop-filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\headers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\x86\intrinsic.h">
+      <Filter>Assembler\x86</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\biaridecod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\bitstream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\threadpool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\win32thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\neon\android.h">
+      <Filter>Assembler\neon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\x86_256\intrinsic_256.h">
+      <Filter>Assembler\x86_AVX2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\decore\neon\android_sao.h">
+      <Filter>Assembler\neon</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\source\decore\neon\android_pixel.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\asm.S">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_inter_pred.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_idct.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_alf.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_deblock.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_sao_neon.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+    <None Include="..\source\decore\neon\android_intra_pred.s">
+      <Filter>Assembler\neon</Filter>
+    </None>
+  </ItemGroup>
+</Project>
