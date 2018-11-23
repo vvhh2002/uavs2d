@@ -22,3 +22,5 @@ apps_dshow/AVS2SrcDec/ipch/
 *.exp
 *.pdb
 *.lib
+.idea/
+cmake-build-debug/
