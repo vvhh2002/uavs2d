@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -29,10 +29,11 @@
 #ifndef _DEFINES_H_
 #define _DEFINES_H_
 
+
 #define MT_FRM_MAXTHREADS 8
 #define MT_REC_MATTHREADS 1
 
-#define COMPILE_10BIT    0
+#define COMPILE_10BIT    1
 
 /* ---------------------------------------------------------------------------
 * basic type define
@@ -49,7 +50,7 @@ typedef unsigned char      uchar_t;
 #if defined(__ANDROID__)
 #else
 #ifndef _INTPTR_T_DEFINED
-typedef i64s_t intptr_t;
+//typedef i64s_t intptr_t;
 #endif
 #endif
 

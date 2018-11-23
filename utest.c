@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -51,7 +51,7 @@
 #define GL_DISPLAY    1
 #endif
 #else
-#define GL_DISPLAY    0
+#define GL_DISPLAY    1
 #endif
 
 
@@ -264,16 +264,21 @@ find_sequence_header(const unsigned char *bs_data, int bs_len, int *left)
 }
 
 #if GL_DISPLAY
-
+#if defined(__APPLE__)
+#include <GLUT/glut.h>
+#else
 #include "glut.h"
+#endif
 
 int screen_w, screen_h;
 int display_w, display_h;
 char *rgb_buf = NULL;
 unsigned char* display_yuv;
+#if defined(_WIN32)
 HANDLE sem_ready, sem_finish;
+#endif
 
-__inline unsigned char CONVERT_ADJUST(double tmp)
+static unsigned char CONVERT_ADJUST(double tmp)
 {
     return (unsigned char)((tmp >= 0 && tmp <= 255) ? tmp : (tmp < 0 ? 0 : 255));
 }
@@ -352,11 +357,13 @@ void reshape(GLsizei w, GLsizei h)
 
 void timeFunc(int value){
     int size = display_w * display_h;
-
+#if defined(_WIN32)
     WaitForSingleObject(sem_ready, INFINITE);
+#endif
     display(display_yuv, display_yuv + size, display_yuv + size + size / 4, display_w, display_w / 2);
+#if defined(_WIN32)
     ReleaseSemaphore(sem_finish, 1, NULL);
-
+#endif
     glutTimerFunc(40, timeFunc, 0);
 }
 
@@ -420,8 +427,10 @@ static __inline void write_output_frame(FILE* fp, int width, int height, int pix
     }
 #if GL_DISPLAY
     display_yuv = buf;
+#if defined(_WIN32)
     ReleaseSemaphore(sem_ready, 1, NULL);
     WaitForSingleObject(sem_finish, INFINITE);
+#endif
 
 #endif
 }
@@ -612,12 +621,14 @@ test_avs2_decoder(char *in_file_name, char *rec_file_name, char *out_file_name)
 #if GL_DISPLAY
                     display_w = width;
                     display_h = height;
+#if defined(_WIN32)
                     sem_ready  = CreateSemaphore(NULL, 0, 1, NULL);
                     sem_finish = CreateSemaphore(NULL, 0, 1, NULL);
-
+#endif
                     rgb_buf = malloc(display_w * display_h * 3);
-
+#if defined(_WIN32)
                     _beginthreadex(NULL, 0, gl_video_thread, NULL, 0, NULL);
+#endif
 #endif
                     if (width <= 0 || height <= 0) {
                         fprintf(stderr, "Error frame size: %d x %d.\n", width, height);
@@ -749,8 +760,10 @@ readagain:
     if (rgb_buf) {
         free(rgb_buf);
     }
+#if defined(_WIN32)
     CloseHandle(sem_ready);
     CloseHandle(sem_finish);
+#endif
 #endif
 
 #if 0
