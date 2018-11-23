@@ -12,7 +12,6 @@ apps_dshow/AVS2SrcDec/ipch/
 *.dat
 *.dec
 *.exe
-*.txt
 *.dll
 *.ax
 *.avs
