@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -140,7 +140,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
                     _mm_storeu_si128((__m128i*)(dst + x), t0);
                 }
                 else{
-                    _mm_maskmoveu_si128(t0, mask, (char_t*)(dst + x));
+                    _mm_maskmoveu_si128(t0, mask, (char *)(dst + x));
                     break;
                 }
             }
@@ -164,11 +164,11 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
         c3 = _mm_set1_epi8(1);
         c4 = _mm_set1_epi8(2);
 
-        off0 = _mm_set1_epi8(saoBlkParam->offset[0]);
-        off1 = _mm_set1_epi8(saoBlkParam->offset[1]);
-        off2 = _mm_set1_epi8(saoBlkParam->offset[2]);
-        off3 = _mm_set1_epi8(saoBlkParam->offset[3]);
-        off4 = _mm_set1_epi8(saoBlkParam->offset[4]);
+        off0 = _mm_set1_epi8((char)saoBlkParam->offset[0]);
+        off1 = _mm_set1_epi8((char)saoBlkParam->offset[1]);
+        off2 = _mm_set1_epi8((char)saoBlkParam->offset[2]);
+        off3 = _mm_set1_epi8((char)saoBlkParam->offset[3]);
+        off4 = _mm_set1_epi8((char)saoBlkParam->offset[4]);
 
         start_y = smb_available_up ? 0 : 1;
         end_y = smb_available_down ? smb_pix_height : (smb_pix_height - 1);
@@ -226,7 +226,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
                     _mm_storeu_si128((__m128i*)(dst + x), t0);
                 }
                 else{
-                    _mm_maskmoveu_si128(t0, mask, (char_t*)(dst + x));
+                    _mm_maskmoveu_si128(t0, mask, (char*)(dst + x));
                     break;
                 }
             }
@@ -249,11 +249,11 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
         c3 = _mm_set1_epi8(1);
         c4 = _mm_set1_epi8(2);
 
-        off0 = _mm_set1_epi8(saoBlkParam->offset[0]);
-        off1 = _mm_set1_epi8(saoBlkParam->offset[1]);
-        off2 = _mm_set1_epi8(saoBlkParam->offset[2]);
-        off3 = _mm_set1_epi8(saoBlkParam->offset[3]);
-        off4 = _mm_set1_epi8(saoBlkParam->offset[4]);
+        off0 = _mm_set1_epi8((char)saoBlkParam->offset[0]);
+        off1 = _mm_set1_epi8((char)saoBlkParam->offset[1]);
+        off2 = _mm_set1_epi8((char)saoBlkParam->offset[2]);
+        off3 = _mm_set1_epi8((char)saoBlkParam->offset[3]);
+        off4 = _mm_set1_epi8((char)saoBlkParam->offset[4]);
 
         start_x_r0 = smb_available_upleft ? 0 : 1;
         end_x_r0 = smb_available_up ? (smb_available_right ? smb_pix_width : (smb_pix_width - 1)) : 1;
@@ -318,7 +318,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
             }
             else{
                 mask_r0 = _mm_load_si128((__m128i*)(intrinsic_mask[end_x_r0 - end_x_r0_16 - 1]));
-                _mm_maskmoveu_si128(t0, mask_r0, (char_t*)(dst + x));
+                _mm_maskmoveu_si128(t0, mask_r0, (char *)(dst + x));
                 break;
             }
         }
@@ -377,7 +377,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
                     _mm_storeu_si128((__m128i*)(dst + x), t0);
                 }
                 else{
-                    _mm_maskmoveu_si128(t0, mask_r, (char_t*)(dst + x));
+                    _mm_maskmoveu_si128(t0, mask_r, (char *)(dst + x));
                     break;
                 }
             }
@@ -435,7 +435,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
             }
             else{
                 mask_rn = _mm_load_si128((__m128i*)(intrinsic_mask[end_x_rn - end_x_rn_16 - 1]));
-                _mm_maskmoveu_si128(t0, mask_rn, (char_t*)(dst + x));
+                _mm_maskmoveu_si128(t0, mask_rn, (char *)(dst + x));
                 break;
             }
         }
@@ -455,11 +455,11 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
         c3 = _mm_set1_epi8(1);
         c4 = _mm_set1_epi8(2);
 
-        off0 = _mm_set1_epi8(saoBlkParam->offset[0]);
-        off1 = _mm_set1_epi8(saoBlkParam->offset[1]);
-        off2 = _mm_set1_epi8(saoBlkParam->offset[2]);
-        off3 = _mm_set1_epi8(saoBlkParam->offset[3]);
-        off4 = _mm_set1_epi8(saoBlkParam->offset[4]);
+        off0 = _mm_set1_epi8((char)saoBlkParam->offset[0]);
+        off1 = _mm_set1_epi8((char)saoBlkParam->offset[1]);
+        off2 = _mm_set1_epi8((char)saoBlkParam->offset[2]);
+        off3 = _mm_set1_epi8((char)saoBlkParam->offset[3]);
+        off4 = _mm_set1_epi8((char)saoBlkParam->offset[4]);
 
         start_x_r0 = smb_available_up ? (smb_available_left ? 0 : 1) : (smb_pix_width - 1);
         end_x_r0 = smb_available_upright ? smb_pix_width : (smb_pix_width - 1);
@@ -524,7 +524,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
             }
             else{
                 mask_r0 = _mm_load_si128((__m128i*)(intrinsic_mask[end_x_r0 - end_x_r0_16 - 1]));
-                _mm_maskmoveu_si128(t0, mask_r0, (char_t*)(dst + x));
+                _mm_maskmoveu_si128(t0, mask_r0, (char *)(dst + x));
                 break;
             }
         }
@@ -583,7 +583,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
                     _mm_storeu_si128((__m128i*)(dst + x), t0);
                 }
                 else{
-                    _mm_maskmoveu_si128(t0, mask_r, (char_t*)(dst + x));
+                    _mm_maskmoveu_si128(t0, mask_r, (char *)(dst + x));
                     break;
                 }
             }
@@ -640,7 +640,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
             }
             else{
                 mask_rn = _mm_load_si128((__m128i*)(intrinsic_mask[end_x_rn - end_x_rn_16 - 1]));
-                _mm_maskmoveu_si128(t0, mask_rn, (char_t*)(dst + x));
+                _mm_maskmoveu_si128(t0, mask_rn, (char *)(dst + x));
                 break;
             }
         }
@@ -654,14 +654,14 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
         int shift_bo = sample_bit_depth - NUM_SAO_BO_CLASSES_IN_BIT;
         int end_x_16 = smb_pix_width - 15;
         
-        r0 = _mm_set1_epi8(saoBlkParam->startBand);
-        r1 = _mm_set1_epi8((saoBlkParam->startBand + 1)%32);
-        r2 = _mm_set1_epi8(saoBlkParam->startBand2);
-        r3 = _mm_set1_epi8((saoBlkParam->startBand2 + 1)%32);
-        off0 = _mm_set1_epi8(saoBlkParam->offset[0]);
-        off1 = _mm_set1_epi8(saoBlkParam->offset[1]);
-        off2 = _mm_set1_epi8(saoBlkParam->offset[2]);
-        off3 = _mm_set1_epi8(saoBlkParam->offset[3]);
+        r0 = _mm_set1_epi8((char)saoBlkParam->startBand);
+        r1 = _mm_set1_epi8((char)((saoBlkParam->startBand + 1)%32));
+        r2 = _mm_set1_epi8((char)saoBlkParam->startBand2);
+        r3 = _mm_set1_epi8((char)((saoBlkParam->startBand2 + 1)%32));
+        off0 = _mm_set1_epi8((char)saoBlkParam->offset[0]);
+        off1 = _mm_set1_epi8((char)saoBlkParam->offset[1]);
+        off2 = _mm_set1_epi8((char)saoBlkParam->offset[2]);
+        off3 = _mm_set1_epi8((char)saoBlkParam->offset[3]);
 
         for (y = 0; y < smb_pix_height; y++) {
             for (x = 0; x < smb_pix_width; x += 16) {
@@ -696,7 +696,7 @@ void SAO_on_block_sse128(void *p1, void *p2, void *p3, int compIdx, int smb_inde
                     _mm_storeu_si128((__m128i*)&dst[x], src0);
                 }
                 else {
-                    _mm_maskmoveu_si128(src0, mask, (char_t*)(dst + x));
+                    _mm_maskmoveu_si128(src0, mask, (char *)(dst + x));
                 }
 
             }
@@ -841,7 +841,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                     t1 = _mm_adds_epi16(t0, s1);
                                     t1 = _mm_min_epi16(t1, max_val);
                                     t1 = _mm_max_epi16(t1, min_val);
-                                    _mm_maskmoveu_si128(t1, mask, (char_t*)(dst));
+                                    _mm_maskmoveu_si128(t1, mask, (char *)(dst));
 
                                     dst += i_dst;
                                     src += i_src;
@@ -894,7 +894,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                             _mm_storeu_si128((__m128i*)(dst + x), t1);
                                         }
                                         else{
-                                            _mm_maskmoveu_si128(t1, mask, (char_t*)(dst + x));
+                                            _mm_maskmoveu_si128(t1, mask, (char *)(dst + x));
                                             break;
                                         }
                                     }
@@ -965,7 +965,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                      t1 = _mm_min_epi16(t1, max_val);
                                      t1 = _mm_max_epi16(t1, min_val);
 
-                                     _mm_maskmoveu_si128(t1, mask, (char_t*)(dst));
+                                     _mm_maskmoveu_si128(t1, mask, (char *)(dst));
 
                                      dst += i_dst;
                                      src += i_src;
@@ -1018,7 +1018,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                                  _mm_storeu_si128((__m128i*)(dst + x), t1);
                                              }
                                              else{
-                                                 _mm_maskmoveu_si128(t1, mask, (char_t*)(dst + x));
+                                                 _mm_maskmoveu_si128(t1, mask, (char*)(dst + x));
                                                  break;
                                              }
                                          }
@@ -1148,7 +1148,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                   }
                                   else{
                                       mask_r0 = _mm_load_si128((__m128i*)(intrinsic_mask_10bit[end_x_r0 - end_x_r0_8 - 1]));
-                                      _mm_maskmoveu_si128(t1, mask_r0, (char_t*)(dst + x));
+                                      _mm_maskmoveu_si128(t1, mask_r0, (char *)(dst + x));
                                       break;
                                   }
                               }
@@ -1200,7 +1200,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                           _mm_storeu_si128((__m128i*)(dst + x), t1);
                                       }
                                       else{
-                                          _mm_maskmoveu_si128(t1, mask_r, (char_t*)(dst + x));
+                                          _mm_maskmoveu_si128(t1, mask_r, (char *)(dst + x));
                                           break;
                                       }
                                   }
@@ -1251,7 +1251,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                   }
                                   else{
                                       mask_rn = _mm_load_si128((__m128i*)(intrinsic_mask_10bit[end_x_rn - end_x_rn_8 - 1]));
-                                      _mm_maskmoveu_si128(t1, mask_rn, (char_t*)(dst + x));
+                                      _mm_maskmoveu_si128(t1, mask_rn, (char *)(dst + x));
                                       break;
                                   }
                               }
@@ -1329,7 +1329,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                  }
                                  else{
                                      mask_r0 = _mm_load_si128((__m128i*)(intrinsic_mask_10bit[end_x_r0 - end_x_r0_8 - 1]));
-                                     _mm_maskmoveu_si128(t1, mask_r0, (char_t*)(dst + x));
+                                     _mm_maskmoveu_si128(t1, mask_r0, (char *)(dst + x));
                                      break;
                                  }
                              }
@@ -1381,7 +1381,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                          _mm_storeu_si128((__m128i*)(dst + x), t1);
                                      }
                                      else{
-                                         _mm_maskmoveu_si128(t1, mask_r, (char_t*)(dst + x));
+                                         _mm_maskmoveu_si128(t1, mask_r, (char *)(dst + x));
                                          break;
                                      }
                                  }
@@ -1431,7 +1431,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                  }
                                  else{
                                      mask_rn = _mm_load_si128((__m128i*)(intrinsic_mask_10bit[end_x_rn - end_x_rn_8 - 1]));
-                                     _mm_maskmoveu_si128(t1, mask_rn, (char_t*)(dst + x));
+                                     _mm_maskmoveu_si128(t1, mask_rn, (char *)(dst + x));
                                      break;
                                  }
                              }
@@ -1446,14 +1446,14 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                           int id2 = saoBlkParam->startBand2;
                           int id3 = (id2 + 1) & 0x1f;
 
-                          r0   = _mm_set1_epi16(saoBlkParam->startBand);
-                          r1   = _mm_set1_epi16((saoBlkParam->startBand + 1) % 32);
-                          r2   = _mm_set1_epi16(saoBlkParam->startBand2);
-                          r3   = _mm_set1_epi16((saoBlkParam->startBand2 + 1) % 32);
-                          off0 = _mm_set1_epi16(saoBlkParam->offset[0]);
-                          off1 = _mm_set1_epi16(saoBlkParam->offset[1]);
-                          off2 = _mm_set1_epi16(saoBlkParam->offset[2]);
-                          off3 = _mm_set1_epi16(saoBlkParam->offset[3]);
+                          r0   = _mm_set1_epi16((short)saoBlkParam->startBand);
+                          r1   = _mm_set1_epi16((short)((saoBlkParam->startBand + 1) % 32));
+                          r2   = _mm_set1_epi16((short)saoBlkParam->startBand2);
+                          r3   = _mm_set1_epi16((short)((saoBlkParam->startBand2 + 1) % 32));
+                          off0 = _mm_set1_epi16((short)saoBlkParam->offset[0]);
+                          off1 = _mm_set1_epi16((short)saoBlkParam->offset[1]);
+                          off2 = _mm_set1_epi16((short)saoBlkParam->offset[2]);
+                          off3 = _mm_set1_epi16((short)saoBlkParam->offset[3]);
 
                           if (smb_pix_width == 4){
                               mask = _mm_set_epi32(0, 0, -1, -1);
@@ -1480,7 +1480,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                   t1 = _mm_min_epi16(t1, max_val);
                                   t1 = _mm_max_epi16(t1, min_val);
 
-                                  _mm_maskmoveu_si128(t1, mask, (char_t*)(dst));
+                                  _mm_maskmoveu_si128(t1, mask, (char*)(dst));
 
                                   dst += i_dst;
                                   src += i_src;
@@ -1518,7 +1518,7 @@ void SAO_on_block_sse128_10bit(void *p1, void *p2, void *p3, int compIdx, int sm
                                           _mm_storeu_si128((__m128i*)&dst[x], t1);
                                       }
                                       else {
-                                          _mm_maskmoveu_si128(t1, mask, (char_t*)(dst + x));
+                                          _mm_maskmoveu_si128(t1, mask, (char *)(dst + x));
                                       }
 
                                   }

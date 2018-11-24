@@ -295,13 +295,13 @@ static void get_pmv(avs2_dec_t *h_dec, unsigned int uiBitSize, unsigned int cu_i
             if (hv == 1) {
                 //for x component
                 if (((mva[0] < 0) && (mvb[0] > 0) && (mvc[0] > 0)) || (mva[0] > 0) && (mvb[0] < 0) && (mvc[0] < 0)) {
-                    pmv[0] = (mvb[0] + mvc[0]) / 2;
+                    pmv[0] = (i16s_t) ((mvb[0] + mvc[0]) / 2);
 
                 } else if (((mvb[0] < 0) && (mva[0] > 0) && (mvc[0] > 0)) || ((mvb[0] > 0) && (mva[0] < 0) && (mvc[0] < 0))) {
-                    pmv[0] = (mvc[0] + mva[0]) / 2;
+                    pmv[0] = (i16s_t) ((mvc[0] + mva[0]) / 2);
 
                 } else if (((mvc[0] < 0) && (mva[0] > 0) && (mvb[0] > 0)) || ((mvc[0] > 0) && (mva[0] < 0) && (mvb[0] < 0))) {
-                    pmv[0] = (mva[0] + mvb[0]) / 2;
+                    pmv[0] = (i16s_t) ((mva[0] + mvb[0]) / 2);
 
                 } else {
                     // !! for Ax
@@ -314,23 +314,23 @@ static void get_pmv(avs2_dec_t *h_dec, unsigned int uiBitSize, unsigned int cu_i
                     pred_vec = min(mva[2], min(mvb[2], mvc[2]));
 
                     if (pred_vec == mva[2]) {
-                        pmv[0] = (mva[0] + mvb[0]) / 2;
+                        pmv[0] = (i16s_t) ((mva[0] + mvb[0]) / 2);
                     } else if (pred_vec == mvb[2]) {
-                        pmv[0] = (mvb[0] + mvc[0]) / 2;
+                        pmv[0] = (i16s_t) ((mvb[0] + mvc[0]) / 2);
                     } else {
-                        pmv[0] = (mvc[0] + mva[0]) / 2;
+                        pmv[0] = (i16s_t) ((mvc[0] + mva[0]) / 2);
                     }
                 }
 
                 //for y component
                 if (((mva[1] < 0) && (mvb[1] > 0) && (mvc[1] > 0)) || (mva[1] > 0) && (mvb[1] < 0) && (mvc[1] < 0)) {
-                    pmv[1] = (mvb[1] + mvc[1]) / 2;
+                    pmv[1] = (i16s_t) ((mvb[1] + mvc[1]) / 2);
 
                 } else if (((mvb[1] < 0) && (mva[1] > 0) && (mvc[1] > 0)) || ((mvb[1] > 0) && (mva[1] < 0) && (mvc[1] < 0))) {
-                    pmv[1] = (mvc[1] + mva[1]) / 2;
+                    pmv[1] = (i16s_t) ((mvc[1] + mva[1]) / 2);
 
                 } else if (((mvc[1] < 0) && (mva[1] > 0) && (mvb[1] > 0)) || ((mvc[1] > 0) && (mva[1] < 0) && (mvb[1] < 0))) {
-                    pmv[1] = (mva[1] + mvb[1]) / 2;
+                    pmv[1] = (i16s_t) ((mva[1] + mvb[1]) / 2);
 
                 } else {
                     // !! for Ay
@@ -1338,52 +1338,52 @@ void read_cu_hdr(avs2_dec_t *h_dec, int *real_cuType)
 
     if (IS_P_SKIP(cu) && h_dec->type == F_IMG) {
         if (h_dec->seq->wsm_enabled && h_dec->i_refs > 1) {
-            cu_loc_dat->weighted_skipmode = aec_weight_skip_mode(h_dec, aec);
+            cu_loc_dat->weighted_skipmode = (char_t) aec_weight_skip_mode(h_dec, aec);
         } else {
             cu_loc_dat->weighted_skipmode = 0;
         }
         
         if ((cu_loc_dat->weighted_skipmode == 0) && h_dec->seq->b_mhpskip_enabled) {
-            cu_loc_dat->md_directskip_mode = aec_pskip_mode(aec);
+            cu_loc_dat->md_directskip_mode = (char_t) aec_pskip_mode(aec);
         }
     }
 
     if (IS_B_SKIP(cu)) {
-        cu_loc_dat->md_directskip_mode = aec_direct_skip(aec);
+        cu_loc_dat->md_directskip_mode = (char_t) aec_direct_skip(aec);
     }
 
     if ((h_dec->type == F_IMG) || (h_dec->type == P_IMG)) {
         interpret_b8pdir_PF(h_dec, pdir);
     } else if (h_dec->type == I_IMG) {                            // intra frame
         interpret_b8pdir_I(h_dec);
-    } else if ((h_dec->type == B_IMG)) { // B frame
+    } else if ((B_IMG == h_dec->type)) { // B frame
         interpret_b8pdir_B(h_dec, pdir);
     }
 
     if (IS_INTRA(cu)) {
-        cu_loc_dat->trans_size = aec_trans_size(aec, h_dec->cu_bitsize, h_dec->seq->useSDIP);
+        cu_loc_dat->trans_size = (char_t) aec_trans_size(aec, h_dec->cu_bitsize, h_dec->seq->useSDIP);
         if (h_dec->seq->useSDIP) {
             cuType = aec_sdip(h_dec, aec);
         }
         cuType = ((cu_loc_dat->trans_size == 0) && (cuType == I8MB)) ? I16MB : cuType;
-        cu->cuType = cuType;
+        cu->cuType = (char_t) cuType;
 
         if (cuType == I16MB) {
-            read_ipred_block_modes(h_dec, 0, cu_idx);
-            read_ipred_block_modes(h_dec, 4, cu_idx);
+            read_ipred_block_modes(h_dec, 0, (unsigned int) cu_idx);
+            read_ipred_block_modes(h_dec, 4, (unsigned int) cu_idx);
         } else {
             for (i = 0; i < 5; i++) {
-                read_ipred_block_modes(h_dec, i, cu_idx);
+                read_ipred_block_modes(h_dec, i, (unsigned int) cu_idx);
             }
         }
     } else {
         if (h_dec->type != B_IMG) {
             init_sub_cu_ref(h_dec);
         } else if (cuType){
-            init_sub_cu_ref_B(h_dec, cu_idx);
+            init_sub_cu_ref_B(h_dec, (unsigned int) cu_idx);
         }
     }
-    init_sub_cu_pdir(h_dec, cu_idx);
+    init_sub_cu_pdir(h_dec, (unsigned int) cu_idx);
 }
 
 void read_cbp(avs2_dec_t *h_dec)

@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -121,7 +121,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 t1 = _mm_adds_epi16(t1, s1);
                 t0 = _mm_packus_epi16(t1, zero); //saturated
 
-                _mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+                _mm_maskmoveu_si128(t0, mask, (char *)(dst));
 
                 dst += i_dst;
                 src += i_src;
@@ -188,7 +188,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                     }
                     else{
 						_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char*)(dst + x + 16));
                         break;
                     }
                 }
@@ -249,7 +249,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 t1 = _mm_adds_epi16(t1, s1);
                 t0 = _mm_packus_epi16(t1, zero); //saturated
 
-                _mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+                _mm_maskmoveu_si128(t0, mask, (char *)(dst));
                 
 				s0 = s1;
 				s1 = s2;
@@ -320,7 +320,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                     }
                     else{
 						_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char*)(dst + x + 16));
                         break;
                     }
                 }
@@ -376,7 +376,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				t0 = _mm_packus_epi16(t1, zero); //saturated
 
 				mask = _mm_loadu_si128((__m128i*)sao_mask_4[smb_available_upleft][smb_available_right]);
-				_mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+				_mm_maskmoveu_si128(t0, mask, (char *)(dst));
 			}
             dst += i_dst;
             src += i_src;
@@ -408,7 +408,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 t1 = _mm_adds_epi16(t1, t2);
                 t0 = _mm_packus_epi16(t1, zero); //saturated
 
-                _mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+                _mm_maskmoveu_si128(t0, mask, (char *)(dst));
                 
 				s1 = s4;
                 dst += i_dst;
@@ -440,7 +440,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				t0 = _mm_packus_epi16(t1, zero); //saturated
 
 				mask = _mm_load_si128((__m128i*)(sao_mask_4[smb_available_left][smb_available_rightdwon]));
-				_mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+				_mm_maskmoveu_si128(t0, mask, (char *)(dst));
 			}
         }
         else {
@@ -507,7 +507,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 else{
                     mask = _mm_loadu_si128((__m128i*)sao_mask_32[end_x_r0 - end_x_r0_32 - 26]);
 					_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                    _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                    _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char *)(dst + x + 16));
                     break;
                 }
             }
@@ -554,7 +554,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                     }
                     else{
 						_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char*)(dst + x + 16));
                         break;
                     }
                 }
@@ -600,7 +600,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 else{
                     mask = _mm_load_si128((__m128i*)(sao_mask_32[end_x_rn - end_x_rn_32 - 26]));
 					_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                    _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                    _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char *)(dst + x + 16));
                     break;
                 }
             }
@@ -650,7 +650,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				t0 = _mm_packus_epi16(t1, zero); //saturated
 
 				mask = _mm_load_si128((__m128i*)(sao_mask_4[smb_available_left][smb_available_upright]));
-				_mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+				_mm_maskmoveu_si128(t0, mask, (char*)(dst));
 			}
 
             dst += i_dst;
@@ -682,7 +682,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                 t1 = _mm_adds_epi16(t1, t2);
                 t0 = _mm_packus_epi16(t1, zero); //saturated
 
-                _mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+                _mm_maskmoveu_si128(t0, mask, (char*)(dst));
                 
                 dst += i_dst;
                 src += i_src;
@@ -713,7 +713,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				t0 = _mm_packus_epi16(t1, zero); //saturated
 
 				mask = _mm_load_si128((__m128i*)(sao_mask_4[smb_available_leftdown][smb_available_right]));
-				_mm_maskmoveu_si128(t0, mask, (char_t*)(dst));
+				_mm_maskmoveu_si128(t0, mask, (char*)(dst));
 			}
         }
 		else{
@@ -782,7 +782,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				else{
 					mask = _mm_load_si128((__m128i*)(sao_mask_32[end_x_r0 - end_x_r0_32 - 26]));
 					_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-					_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+					_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char*)(dst + x + 16));
 					break;
 				}
 			}
@@ -829,7 +829,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 					}
 					else{
 						_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-						_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+						_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char*)(dst + x + 16));
 						break;
 					}
 				}
@@ -874,7 +874,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				else{
 					mask = _mm_load_si128((__m128i*)(sao_mask_32[end_x_rn - end_x_rn_32 - 26]));
 					_mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-					_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+					_mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char *)(dst + x + 16));
 					break;
 				}
 			}
@@ -889,14 +889,14 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 			__m128i zero = _mm_setzero_si128();
 			int shift_bo = sample_bit_depth - NUM_SAO_BO_CLASSES_IN_BIT;
 
-			r0 = _mm_set1_epi16(saoBlkParam->startBand);
-			r1 = _mm_set1_epi16((saoBlkParam->startBand + 1)%32);
-			r2 = _mm_set1_epi16(saoBlkParam->startBand2);
-			r3 = _mm_set1_epi16((saoBlkParam->startBand2 + 1)%32);
-			off0 = _mm_set1_epi16(saoBlkParam->offset[0]);
-			off1 = _mm_set1_epi16(saoBlkParam->offset[1]);
-			off2 = _mm_set1_epi16(saoBlkParam->offset[2]);
-			off3 = _mm_set1_epi16(saoBlkParam->offset[3]);
+			r0 = _mm_set1_epi16((short)saoBlkParam->startBand);
+			r1 = _mm_set1_epi16((short)((saoBlkParam->startBand + 1)%32));
+			r2 = _mm_set1_epi16((short)saoBlkParam->startBand2);
+			r3 = _mm_set1_epi16((short)((saoBlkParam->startBand2 + 1)%32));
+			off0 = _mm_set1_epi16((short)saoBlkParam->offset[0]);
+			off1 = _mm_set1_epi16((short)saoBlkParam->offset[1]);
+			off2 = _mm_set1_epi16((short)saoBlkParam->offset[2]);
+			off3 = _mm_set1_epi16((short)saoBlkParam->offset[3]);
 
 			mask = _mm_set_epi8(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, -1, -1, -1);
 
@@ -921,7 +921,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 				t1 = _mm_adds_epi16(t0, src0);
 				src0 = _mm_packus_epi16(t1, zero); //saturated
 
-				_mm_maskmoveu_si128(src0, mask, (char_t*)(dst));
+				_mm_maskmoveu_si128(src0, mask, (char *) (dst));
 
 				dst += i_dst;
 				src += i_src;
@@ -935,14 +935,14 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
 
             end_x = smb_pix_width - 31;
 
-			r0 = _mm256_set1_epi8(saoBlkParam->startBand);
-			r1 = _mm256_set1_epi8((saoBlkParam->startBand + 1)%32);
-			r2 = _mm256_set1_epi8(saoBlkParam->startBand2);
-			r3 = _mm256_set1_epi8((saoBlkParam->startBand2 + 1)%32);
-			off0 = _mm256_set1_epi8(saoBlkParam->offset[0]);
-			off1 = _mm256_set1_epi8(saoBlkParam->offset[1]);
-			off2 = _mm256_set1_epi8(saoBlkParam->offset[2]);
-			off3 = _mm256_set1_epi8(saoBlkParam->offset[3]);
+			r0 = _mm256_set1_epi8((char)saoBlkParam->startBand);
+			r1 = _mm256_set1_epi8((char)((saoBlkParam->startBand + 1)%32));
+			r2 = _mm256_set1_epi8((char)saoBlkParam->startBand2);
+			r3 = _mm256_set1_epi8((char)((saoBlkParam->startBand2 + 1)%32));
+			off0 = _mm256_set1_epi8((char)saoBlkParam->offset[0]);
+			off1 = _mm256_set1_epi8((char)saoBlkParam->offset[1]);
+			off2 = _mm256_set1_epi8((char)saoBlkParam->offset[2]);
+			off3 = _mm256_set1_epi8((char)saoBlkParam->offset[3]);
 
             if (smb_pix_width > 32) {
                 mask = _mm_load_si128((__m128i*)(sao_mask_32[smb_pix_width - 32 - 26]));
@@ -982,7 +982,7 @@ void SAO_on_block_sse256(com_pic_t *pic_src, com_pic_t *pic_dst, sap_param_t *sa
                         _mm256_storeu_si256((__m256i*)(dst + x), t0);
                     } else{
                         _mm_storeu_si128((__m128i*)(dst + x), _mm256_castsi256_si128(t0));
-                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char_t*)(dst + x + 16));
+                        _mm_maskmoveu_si128(_mm256_extracti128_si256(t0, 1), mask, (char *)(dst + x + 16));
                     }
 				}
 				dst += i_dst;

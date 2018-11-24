@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -73,7 +73,7 @@ void xPredIntraVertAdi_sse256(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, in
 					_mm_storeu_si128((__m128i*)(dst + j), S1);
 				}
 				S1 = _mm_loadu_si128((const __m128i*)(rpSrc + j));
-				_mm_maskmoveu_si128(S1, mask, (char_t*)&dst[j]);
+				_mm_maskmoveu_si128(S1, mask, (char *)&dst[j]);
 				dst += i_dst;
 			}
 		}
@@ -143,7 +143,7 @@ void xPredIntraHorAdi_sse256(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, int
 				_mm_storeu_si128((__m128i*)(dst + j), S1);
 				}
 				S1 = _mm_set1_epi8((char)rpSrc[-i]);
-				_mm_maskmoveu_si128(S1, mask, (char_t*)&dst[j]);
+				_mm_maskmoveu_si128(S1, mask, (char*)&dst[j]);
 				dst += i_dst;
 			}
 		}
@@ -278,7 +278,7 @@ void xPredIntraDCAdi_see256(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, int 
 				{
 				_mm_storeu_si128((__m128i*)(dst + j), S1);
 				}
-				_mm_maskmoveu_si128(S1, mask, (char_t*)&dst[j]);
+				_mm_maskmoveu_si128(S1, mask, (char *)&dst[j]);
 				dst += i_dst;
 			}
 		}

@@ -189,7 +189,7 @@ void com_if_filter_hor_4_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
             mVal = _mm_srai_epi16(mVal, shift);
 			mVal = _mm_packus_epi16(mVal, mVal);
 
-            _mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+            _mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
         }
 
         src += i_src;
@@ -259,7 +259,7 @@ void com_if_filter_hor_8_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
             val = _mm_srai_epi16(val, shift);
 			val = _mm_packus_epi16(val, val);
 
-            _mm_maskmoveu_si128(val, mask, (char_t*)&dst[col]);
+            _mm_maskmoveu_si128(val, mask, (char *)&dst[col]);
         }
 
         src += i_src;
@@ -329,15 +329,15 @@ void com_if_filter_ver_4_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
 				mVal = _mm_srai_epi16(mVal, shift);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-                _mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+                _mm_maskmoveu_si128(mVal, mask, (char*)&dst[col]);
             }
 
             src += i_src;
             dst += i_dst;
         }
     } else {
-		__m128i coeff0 = _mm_set1_epi16(*(i32s_t*)coeff);
-		__m128i coeff1 = _mm_set1_epi16(*(i32s_t*)(coeff + 2));
+		__m128i coeff0 = _mm_set1_epi16((short)(*(i32s_t*)coeff));
+		__m128i coeff1 = _mm_set1_epi16((short)(*(i32s_t*)(coeff + 2)));
 		__m128i mVal;
         for (row = 0; row < height; row++) {
             p = src;
@@ -382,7 +382,7 @@ void com_if_filter_ver_4_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
 				mVal = _mm_srai_epi16(mVal, shift);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-                _mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+                _mm_maskmoveu_si128(mVal, mask, (char*)&dst[col]);
             }
 
             src += i_src;
@@ -476,17 +476,17 @@ void com_if_filter_ver_8_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
 				mVal = _mm_srai_epi16(mVal, shift);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-				_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+				_mm_maskmoveu_si128(mVal, mask, (char*)&dst[col]);
             }
 
             src += i_src;
             dst += i_dst;
         }
     } else {
-		__m128i coeff0 = _mm_set1_epi16(*(i32s_t*)coeff);
-		__m128i coeff1 = _mm_set1_epi16(*(i32s_t*)(coeff + 2));
-		__m128i coeff2 = _mm_set1_epi16(*(i32s_t*)(coeff + 4));
-		__m128i coeff3 = _mm_set1_epi16(*(i32s_t*)(coeff + 6));
+		__m128i coeff0 = _mm_set1_epi16((short)(*(i32s_t*)coeff));
+		__m128i coeff1 = _mm_set1_epi16((short)(*(i32s_t*)(coeff + 2)));
+		__m128i coeff2 = _mm_set1_epi16((short)(*(i32s_t*)(coeff + 4)));
+		__m128i coeff3 = _mm_set1_epi16((short)(*(i32s_t*)(coeff + 6)));
 		__m128i mVal;
         for (row = 0; row < height; row++) {
             p = src;
@@ -551,7 +551,7 @@ void com_if_filter_ver_8_sse128(const pel_t *src, int i_src, pel_t *dst, int i_d
 				mVal = _mm_srai_epi16(mVal, shift);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-                _mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+                _mm_maskmoveu_si128(mVal, mask, (char*)&dst[col]);
             }
 
             src += i_src;
@@ -679,15 +679,15 @@ void com_if_filter_hor_ver_4_sse128(const pel_t *src, int i_src, pel_t *dst, int
 				mVal = _mm_packs_epi32(mVal1, mVal2);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-				_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+				_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 			}
 
 			tmp += i_tmp;
 			dst += i_dst;
 		}
     } else {
-		__m128i coeff0 = _mm_set1_epi16(*(i32s_t*)coef_y);
-		__m128i coeff1 = _mm_set1_epi16(*(i32s_t*)(coef_y + 2));
+		__m128i coeff0 = _mm_set1_epi16((short)(*(i32s_t*)coef_y));
+		__m128i coeff1 = _mm_set1_epi16((short)(*(i32s_t*)(coef_y + 2)));
 		__m128i mVal1, mVal2, mVal;
 		coeff0 = _mm_cvtepi8_epi16(coeff0);
 		coeff1 = _mm_cvtepi8_epi16(coeff1);
@@ -751,7 +751,7 @@ void com_if_filter_hor_ver_4_sse128(const pel_t *src, int i_src, pel_t *dst, int
 				mVal = _mm_packs_epi32(mVal1, mVal2);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-				_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+				_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 			}
 
 			tmp += i_tmp;
@@ -915,7 +915,7 @@ void com_if_filter_hor_ver_8_sse128(const pel_t *src, int i_src, pel_t *dst, int
 				mVal = _mm_packs_epi32(mVal1, mVal2);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-				_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+				_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 			}
 			tmp += i_tmp;
 			dst += i_dst;
@@ -1026,7 +1026,7 @@ void com_if_filter_hor_ver_8_sse128(const pel_t *src, int i_src, pel_t *dst, int
 				mVal = _mm_packs_epi32(mVal1, mVal2);
 				mVal = _mm_packus_epi16(mVal, mVal);
 
-				_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+				_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 			}
 
 			tmp += i_tmp;
@@ -1142,7 +1142,7 @@ void com_if_filter_hor_4_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 
 			}
 			mVal = _mm_min_epu16(mVal, max_val1);
-			_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+			_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 
 			src += i_src;
 			dst += i_dst;
@@ -1258,7 +1258,7 @@ void com_if_filter_ver_4_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 
 					mVal = _mm_packus_epi32(T00, T10);
 					mVal = _mm_min_epu16(mVal, max_val1);
-					_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+					_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 
 				}
 				else
@@ -1279,7 +1279,7 @@ void com_if_filter_ver_4_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 
 					mVal = _mm_packus_epi32(T00, T00);
 					mVal = _mm_min_epu16(mVal, max_val1);
-					_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+					_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 				}
 
 				src += i_src;
@@ -1397,7 +1397,7 @@ void com_if_filter_ver_4_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 					mVal = _mm_packus_epi32(M0, M2);
 					mVal = _mm_min_epu16(mVal, max_val1);
 
-					_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+					_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 				}
 				else
 				{
@@ -1420,7 +1420,7 @@ void com_if_filter_ver_4_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 					mVal = _mm_packus_epi32(M0, M0);
 					mVal = _mm_min_epu16(mVal, max_val1);
 
-					_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+					_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 				}
 
 				src += i_src;
@@ -1625,7 +1625,7 @@ void com_if_filter_hor_ver_4_sse128_10bit(const pel_t *src, int i_src, pel_t *ds
 
 			mVal = _mm_packus_epi32(M0, M2);
 			mVal = _mm_min_epu16(mVal, max_val1);
-			_mm_maskmoveu_si128(mVal, mask, (char_t*)&dst[col]);
+			_mm_maskmoveu_si128(mVal, mask, (char *)&dst[col]);
 
 			tmp += i_tmp;
 			dst += i_dst;
@@ -1719,7 +1719,7 @@ void com_if_filter_hor_8_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 			M3 = _mm_srai_epi32(M3, 6);
 			M2 = _mm_packus_epi32(M2, M3);
 			M2 = _mm_min_epu16(M2, max_val1);
-			_mm_maskmoveu_si128(M2, mask, (char_t*)&dst[i]);
+			_mm_maskmoveu_si128(M2, mask, (char*)&dst[i]);
 
 			dst += i_dst;
 			src += i_src;
@@ -1884,7 +1884,7 @@ void com_if_filter_ver_8_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 				N1 = _mm_srai_epi32(N1, 6);
 				N0 = _mm_packus_epi32(N0, N1);
 				N0 = _mm_min_epu16(N0, max_val1);
-				_mm_maskmoveu_si128(N0, mask, (char_t*)&dst[i]);
+				_mm_maskmoveu_si128(N0, mask, (char*)&dst[i]);
 
 				dst += i_dst;
 				src += i_src;
@@ -2026,7 +2026,7 @@ void com_if_filter_ver_8_sse128_10bit(const pel_t *src, int i_src, pel_t *dst, i
 				N1 = _mm_srai_epi32(N1, 6);
 				N0 = _mm_packus_epi32(N0, N1);
 				N0 = _mm_min_epu16(N0, max_val1);
-				_mm_maskmoveu_si128(N0, mask, (char_t*)&dst[i]);
+				_mm_maskmoveu_si128(N0, mask, (char *)&dst[i]);
 
 				dst += i_dst;
 				src += i_src;
@@ -2259,7 +2259,7 @@ void com_if_filter_hor_ver_8_sse128_10bit(const pel_t *src, int i_src, pel_t *ds
 			N1 = _mm_srai_epi32(N1, shift2);
 			N0 = _mm_packus_epi32(N0, N1);
 			N0 = _mm_min_epu16(N0, max_val1);
-			_mm_maskmoveu_si128(N0, mask, (char_t*)&dst[i]);
+			_mm_maskmoveu_si128(N0, mask, (char *)&dst[i]);
 
 			dst += i_dst;
 			tmp += i_tmp;

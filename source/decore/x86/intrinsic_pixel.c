@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -282,7 +282,7 @@ void add_pel_clip_sse128(const pel_t *src1, int i_src1, const resi_t *src2, int 
             S1 = _mm_add_epi16(R1, S1);
             S2 = _mm_add_epi16(R2, S2);
             D = _mm_packus_epi16(S1, S2);
-            _mm_maskmoveu_si128(D, mask, (char_t*)&dst[j]);
+            _mm_maskmoveu_si128(D, mask, (char *)&dst[j]);
 
             src1 += i_src1;
             src2 += i_src2;
@@ -329,7 +329,7 @@ void add_pel_clip_sse128_10bit(const pel_t *src1, int i_src1, const resi_t *src2
             D = _mm_add_epi16(_mm_loadu_si128((const __m128i*)(src1 + j)), _mm_loadu_si128((const __m128i*)(src2 + j)));
             D = _mm_min_epi16(D, max_val);
             D = _mm_max_epi16(D, zero);
-            _mm_maskmoveu_si128(D, mask, (char_t*)&dst[j]);
+            _mm_maskmoveu_si128(D, mask, (char *)&dst[j]);
 
             src1 += i_src1;
             src2 += i_src2;
@@ -369,7 +369,7 @@ void avg_pel_sse128(pel_t *dst, int i_dst, pel_t *src1, int i_src1, pel_t *src2,
             S1 = _mm_loadu_si128((const __m128i*)(src1 + j));
             S2 = _mm_load_si128((const __m128i*)(src2 + j));
             D = _mm_avg_epu8(S1, S2);
-            _mm_maskmoveu_si128(D, mask, (char_t*)&dst[j]);
+            _mm_maskmoveu_si128(D, mask, (char *)&dst[j]);
 
             src1 += i_src1;
             src2 += i_src2;
@@ -405,7 +405,7 @@ void avg_pel_sse128_10bit(pel_t *dst, int i_dst, pel_t *src1, int i_src1, pel_t 
             }
 
             D = _mm_avg_epu16(_mm_loadu_si128((const __m128i*)(src1 + j)), _mm_loadu_si128((const __m128i*)(src2 + j)));
-            _mm_maskmoveu_si128(D, mask, (char_t*)&dst[j]);
+            _mm_maskmoveu_si128(D, mask, (char*)&dst[j]);
 
             src1 += i_src1;
             src2 += i_src2;

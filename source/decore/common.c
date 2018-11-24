@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -39,7 +39,7 @@ funs_handle_t g_funs_handle;
 void *com_malloc(int i_size)
 {
     int mask = ALIGN_BASIC - 1;
-    uchar_t *align_buf;
+    uchar_t *align_buf=NULL;
     uchar_t *buf = (uchar_t *)malloc(i_size + mask + sizeof(void **));
 
     if (buf) {
@@ -47,7 +47,7 @@ void *com_malloc(int i_size)
         align_buf -= (intptr_t)align_buf & mask;
         *(((void **)align_buf) - 1) = buf;
     } else {
-        com_log(COM_LOG_ERROR, "malloc of size %d failed\n", i_size);
+        com_log(COM_LOG_ERROR, (char_t *)"malloc of size %d failed\n", i_size);
     }
     memset(align_buf, 0, i_size);
     return align_buf;
@@ -58,7 +58,7 @@ void com_free(void *p)
     if (p) {
         free(*(((void **)p) - 1));
     } else {
-        com_log(COM_LOG_WARNING, "free a NULL pointer\n");
+        com_log(COM_LOG_WARNING, (char_t *)"free a NULL pointer\n");
     }
 }
 
@@ -79,7 +79,7 @@ com_pic_t* com_pic_yuv_create(int width, int height, int pad)
     uchar_t* p;
 
     if (width % 4 != 0 && height % 4 != 0) {
-        com_log(COM_LOG_ERROR, "%s: picture's width and height are not correct: %d x %d \n", __FUNCTION__, width, height);
+        com_log(COM_LOG_ERROR, (char_t *)"%s: picture's width and height are not correct: %d x %d \n", __FUNCTION__, width, height);
     }
 
     ret = (com_pic_t *)com_malloc(total);
@@ -252,24 +252,24 @@ static void cavs_log_default(int i_level, const char_t *psz_fmt, va_list arg)
 
     switch (i_level) {
     case COM_LOG_ERROR:
-        psz_prefix = "error";
+        psz_prefix = (char_t *)"error";
         break;
     case COM_LOG_WARNING:
-        psz_prefix = "warning";
+        psz_prefix = (char_t *)"warning";
         break;
     case COM_LOG_INFO:
-        psz_prefix = "info";
+        psz_prefix = (char_t *)"info";
         break;
     case COM_LOG_DEBUG:
-        psz_prefix = "debug";
+        psz_prefix = (char_t *)"debug";
         break;
     default:
-        psz_prefix = "unknown";
+        psz_prefix = (char_t *)"unknown";
         break;
     }
 
-    fprintf(stderr, "[%s]: ", psz_prefix);
-    vfprintf(stderr, psz_fmt, arg);
+    fprintf(stderr, "[%s]: ", (char *) psz_prefix);
+    vfprintf(stderr, (const char *) psz_fmt, arg);
 
     if (i_level == COM_LOG_ERROR) {
         assert(0);

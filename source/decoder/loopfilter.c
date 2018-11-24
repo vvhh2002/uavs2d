@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -280,8 +280,8 @@ static void deblock_b8(com_rec_t *rec, com_pic_t *pic, int b8y, int b8x, int dir
 
         g_funs_handle.deblock_edge[dir](src_y, i_src, Alpha, Beta, fixed_skip_flag);
 
-        fixed_skip_flag[0] = (skip_flag[0] == 2);
-        fixed_skip_flag[1] = (skip_flag[1] == 2);
+        fixed_skip_flag[0] = (uchar_t) (skip_flag[0] == 2);
+        fixed_skip_flag[1] = (uchar_t) (skip_flag[1] == 2);
 
         if ((((b8x & 0x1) == 0 && (!dir)) || ((b8y & 0x1) == 0) && dir) && (fixed_skip_flag[0] || fixed_skip_flag[1])) {
             int i_srcc = pic->i_stridec;

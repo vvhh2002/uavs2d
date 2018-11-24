@@ -165,7 +165,7 @@ void add_pel_clip_sse256(const pel_t *src1, int i_src1, const resi_t *src2, int 
 				S1 = _mm_add_epi16(R1, S1);
 				S2 = _mm_add_epi16(R2, S2);
 				D = _mm_packus_epi16(S1, S2);
-				_mm_maskmoveu_si128(D, mask1, (char_t*)&dst[j]);
+				_mm_maskmoveu_si128(D, mask1, (char *)&dst[j]);
 
 				src1 += i_src1;
 				src2 += i_src2;
@@ -281,7 +281,7 @@ void avg_pel_sse256(pel_t *dst, int i_dst, pel_t *src1, int i_src1, pel_t *src2,
 				S1 = _mm_loadu_si128((const __m128i*)(src1 + j));
 				S2 = _mm_load_si128((const __m128i*)(src2 + j));
 				D = _mm_avg_epu8(S1, S2);
-				_mm_maskmoveu_si128(D, mask, (char_t*)&dst[j]);
+				_mm_maskmoveu_si128(D, mask, (char*)&dst[j]);
 
 				src1 += i_src1;
 				src2 += i_src2;

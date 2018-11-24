@@ -153,7 +153,7 @@ i64s_t dec_core_buf_create(avs2_dec_t *h_dec, seq_info_t * seq)
     p = ALIGN_POINTER(p);
 
     h_dec->dec_info_buffer = (char_t*)com_malloc(total_mem_size);
-    buf = h_dec->dec_info_buffer;
+    buf = (uchar_t *) h_dec->dec_info_buffer;
 
     GIVE_BUFFER(h_dec->cu_array,  buf, seq->img_size_in_mcu * sizeof(com_cu_t), com_cu_t*);
     GIVE_BUFFER(h_dec->lcu_array, buf, lcu_array_size * sizeof(com_lcu_t), com_lcu_t*);
@@ -735,7 +735,7 @@ AVS2_API void __cdecl uavs2d_lib_decode(void *handle, avs2_frame_t *frm)
                     ctrl->total_memory += dec_core_buf_create(&ctrl->p_dec[i], &ctrl->seq_info);
                 }
 
-                com_log(COM_LOG_INFO, "total memory: %.2f MB\n", ctrl->total_memory * 1.0 / 1024 / 1024);
+                com_log(COM_LOG_INFO, (char_t *)"total memory: %.2f MB\n", ctrl->total_memory * 1.0 / 1024 / 1024);
 
 #if COMPILE_10BIT
                 com_init_intrinsic_10bit();
