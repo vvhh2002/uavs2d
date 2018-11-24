@@ -57,8 +57,8 @@ void set_ref_info(avs2_dec_t *h_dec)
     com_ref_t *refs = h_dec->ref_list;
 
     for (i = 0; i < h_dec->i_refs; i++) {
-        refs[i].dist[0] = COM_ADD_MODE(h_dec->img_tr_ext   * 2 - refs[i].frm->imgtr * 2, 512);
-        refs[i].dist[1] = COM_ADD_MODE(h_dec->imgtr_next_P * 2 - h_dec->img_tr_ext  * 2, 512);
+        refs[i].dist[0] = (int) COM_ADD_MODE(h_dec->img_tr_ext * 2 - refs[i].frm->imgtr * 2, 512);
+        refs[i].dist[1] = (int) COM_ADD_MODE(h_dec->imgtr_next_P * 2 - h_dec->img_tr_ext * 2, 512);
 
         refs[i].ref_imgtr = refs[i].frm->imgtr;
         
@@ -153,7 +153,7 @@ static void com_if_filter_hor_4(const pel_t *src, int i_src, pel_t *dst, int i_d
         for (col = 0; col < width; col++) {
             sum = FLT_4TAP_HOR(src, col, coeff);
             val = (sum + 32) >> 6;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         src += i_src;
         dst += i_dst;
@@ -169,7 +169,7 @@ static void com_if_filter_hor_8(const pel_t *src, int i_src, pel_t *dst, int i_d
         for (col = 0; col < width; col++) {
             sum = FLT_8TAP_HOR(src, col, coeff);
             val = (sum + 32) >> 6;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         src += i_src;
         dst += i_dst;
@@ -292,7 +292,7 @@ static void com_if_filter_hor_ver_8(const pel_t *src, int i_src, pel_t *dst, int
         for (row = -3; row < height + 4; row++) {
             for (col = 0; col < width; col++) {
                 sum = FLT_8TAP_HOR(src, col, coeff_h);
-                tmp[col] = (sum + add1) >> shift1;
+                tmp[col] = (i16s_t) ((sum + add1) >> shift1);
             }
             src += i_src;
             tmp += 64;
@@ -313,7 +313,7 @@ static void com_if_filter_hor_ver_8(const pel_t *src, int i_src, pel_t *dst, int
         for (col = 0; col < width; col++) {
             sum = FLT_8TAP_VER(tmp, col, 64, coeff_v);
             val = (sum + add2) >> shift2;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         dst += i_dst;
         tmp += 64;
