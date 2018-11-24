@@ -19,5 +19,5 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -march=native")
 add_library(uavs2d ${DIR_UAVS2D_SRC} )
 set_property(TARGET uavs2d PROPERTY C_STANDARD 99)
 
-install(TARGETS uavs2d LIBRARY DESTINATION lib ARCHIVE DESTINATION alib)
+install(TARGETS uavs2d LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
 install(FILES decoder/uavs2d.h DESTINATION include)
