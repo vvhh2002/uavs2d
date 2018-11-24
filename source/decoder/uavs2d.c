@@ -228,6 +228,14 @@ void cpy_seq_info(avs2_frame_t *frm, seq_info_t *hdr)
     frm->info.progressive_seq = hdr->progressive_sequence;
     frm->info.output_bit_depth = hdr->output_bit_depth;
     frm->info.frame_rate_code = hdr->frame_rate_code;
+
+
+    //add by Victor
+    frm->info.seq_info.profile_id=hdr->profile_id;
+    frm->info.seq_info.level_id=hdr->level_id;
+    frm->info.seq_info.progressive_sequence=hdr->progressive_sequence;
+    frm->info.seq_info.sample_bit_depth=hdr->sample_bit_depth;
+
 }
 
 /*
@@ -249,10 +257,10 @@ void write_frame(avs2_dec_ctrl_t *ctrl, avs2_frame_t *frm, i64s_t pos)          
     int img_width_cr  = (img_width / 2);
     int img_height_cr = (img_height / 2);
 
-    pel_t *src, *srcu, *srcv;
-    int i_src, i_srcc;
-    uchar_t *dst, *dstu, *dstv;
-    int i_dst, i_dstc;
+    pel_t *src=NULL, *srcu=NULL, *srcv=NULL;
+    int i_src=0, i_srcc=0;
+    uchar_t *dst=NULL, *dstu=NULL, *dstv=NULL;
+    int i_dst=0, i_dstc=0;
 
     dst    = frm->p_buf_y;
     dstu   = frm->p_buf_u;
@@ -270,8 +278,8 @@ void write_frame(avs2_dec_ctrl_t *ctrl, avs2_frame_t *frm, i64s_t pos)          
     } else {
         for (j = 0; j < ctrl->ref_buf_frames; j++) {
             if (ctrl->frm_buf[j]->bak_imgtr == pos) {
-                com_frm_t *frm = ctrl->frm_buf[j];
-                com_pic_t *pic = frm->yuv_data;
+                com_frm_t *frm_l = ctrl->frm_buf[j];
+                com_pic_t *pic = frm_l->yuv_data;
 
                 src    = pic->p_y;
                 i_src  = pic->i_stride;
@@ -279,12 +287,12 @@ void write_frame(avs2_dec_ctrl_t *ctrl, avs2_frame_t *frm, i64s_t pos)          
                 srcv   = pic->p_v;
                 i_srcc = pic->i_stridec;
 
-                frm->usecnt--;
+                frm_l->usecnt--;
 
-                if (frm->b_refed == 0) {
-                    assert(frm->usecnt == 0);
-                    frm->coiref = -1;
-                    frm->layer = -1;
+                if (frm_l->b_refed == 0) {
+                    assert(frm_l->usecnt == 0);
+                    frm_l->coiref = -1;
+                    frm_l->layer = -1;
                 }
                 break;
             }
@@ -292,21 +300,62 @@ void write_frame(avs2_dec_ctrl_t *ctrl, avs2_frame_t *frm, i64s_t pos)          
     }
     
     if (frm->i_output_type == AVS2_OUT_I420) {
+
+        //ffmpeg cli has a bug can't process yuv420p10le input
+
+        //printf("output 10bit!i_dst %d,"
+        //       " i_src %d,"
+        //       "i_srcc %d "
+        //       "seq->sample_bit_depth %d"
+        //       "\n",
+        //       i_dst,
+        //       i_src,
+        //       i_srcc,
+        //       seq->sample_bit_depth
+        //       );
+        //g_funs_handle.cpy_pel_to_uchar(src, i_src, dst, i_dst, img_width, img_height, seq->sample_bit_depth);
+        //g_funs_handle.cpy_pel_to_uchar(srcu, i_srcc, dstu, i_dstc, img_width_cr, img_height_cr, seq->sample_bit_depth);
+        //g_funs_handle.cpy_pel_to_uchar(srcv, i_srcc, dstv, i_dstc, img_width_cr, img_height_cr, seq->sample_bit_depth);
+
+
+        /* below only for 10-bit to 8-bit output
+
+        for (int i = 0; i < img_height; i++) {
+            for (j = 0; j < img_width; j++) {
+                dst[j] = (uchar_t)COM_CLIP3(0, 255, (src[j] + 2) >> 2);
+            }
+            src += i_src;
+            dst += i_dst;
+        }
+
+        for (int i = 0; i < img_height_cr; i++) {
+            for (j = 0; j < img_width_cr; j++) {
+                dstu[j] = (uchar_t)COM_CLIP3(0, 255, (srcu[j] + 2) >> 2);
+                dstv[j] = (uchar_t)COM_CLIP3(0, 255, (srcv[j] + 2) >> 2);
+            }
+            srcu += i_srcc;
+            dstu += i_dstc;
+            srcv += i_srcc;
+            dstv += i_dstc;
+        }
+
+         */
+
         if (seq->output_bit_depth == 8) {
             g_funs_handle.cpy_pel_to_uchar(src, i_src, dst, i_dst, img_width, img_height, seq->sample_bit_depth);
             g_funs_handle.cpy_pel_to_uchar(srcu, i_srcc, dstu, i_dstc, img_width_cr, img_height_cr, seq->sample_bit_depth);
             g_funs_handle.cpy_pel_to_uchar(srcv, i_srcc, dstv, i_dstc, img_width_cr, img_height_cr, seq->sample_bit_depth);
         } else { // output 10bit
             assert(seq->sample_bit_depth == 10);
-
+        //    printf("output 10bit!i_dst %d, i_src %d,i_srcc %d \n",i_dst,i_src,i_srcc);
             for (j = 0; j < img_height; j++) {
                 memcpy(dst, src, img_width * 2);
                 dst += i_dst;
                 src += i_src;
             }
             for (j = 0; j < img_height_cr; j++) {
-                memcpy(dstu, srcu, img_width_cr * 2);
-                memcpy(dstv, srcv, img_width_cr * 2);
+                memcpy(dstu, srcu, img_width_cr * 2 );
+                memcpy(dstv, srcv, img_width_cr * 2 );
                 dstu += i_dstc;
                 dstv += i_dstc;
                 srcu += i_srcc;
@@ -322,7 +371,7 @@ void write_frame(avs2_dec_ctrl_t *ctrl, avs2_frame_t *frm, i64s_t pos)          
 
 void report_frame(avs2_dec_t *h_dec, avs2_frame_t *frm, outdata *out, int pos)
 {
-    frm->qp = out->stdoutdata[pos].qp;
+    frm->qp = (unsigned int) out->stdoutdata[pos].qp;
     frm->pts = out->stdoutdata[pos].pts;
 
     if (out->stdoutdata[pos].type == I_IMG) { // I picture
@@ -363,7 +412,7 @@ int out_put_frame(avs2_dec_ctrl_t *ctrl, avs2_dec_t *h_dec, avs2_frame_t *frm)
 
     assert(pointer_tmp < 8);
 
-    h_dec->PrevPicDistanceLsb = (h_dec->pic_hdr.coding_order % 256);
+    h_dec->PrevPicDistanceLsb = (int) (h_dec->pic_hdr.coding_order % 256);
 
     outprint->stdoutdata[pointer_tmp].type = h_dec->type;
     outprint->stdoutdata[pointer_tmp].typeb = h_dec->typeb;
@@ -817,7 +866,6 @@ AVS2_API void __cdecl uavs2d_lib_decode(void *handle, avs2_frame_t *frm)
         dec_one_frame(curr_dec);
     }
 
-    return;
 }
 
 AVS2_API void __cdecl  uavs2d_lib_flush(void *handle, avs2_frame_t *frm)

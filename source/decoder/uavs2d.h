@@ -80,6 +80,70 @@ extern "C" {
 #define AVS2_P_IMG  5
 #define AVS2_F_IMG  6
 #define AVS2_B_IMG  7
+typedef struct {
+    int profile_id;
+    int level_id;
+    int progressive_sequence;
+    int is_field_sequence;
+    int horizontal_size;
+    int vertical_size;
+    int chroma_format;
+    int output_bit_depth;
+    int sample_bit_depth;
+    int sample_precision;
+    int aspect_ratio_information;
+    int frame_rate_code;
+    int bit_rate_lower;
+    int bit_rate_upper;
+    int low_delay;
+    int temporal_id_exist_flag;
+    int b_pmvr_enabled;
+    int b_mhpskip_enabled;
+    int dhp_enabled;
+    int wsm_enabled;
+    int useNSQT;
+    int useDQP;
+    int useSDIP;
+    int lf_cross_slice;
+    int b_secT_enabled;
+    int bbv_buf_size;
+    int background_picture_enable;
+    int g_uiMaxSizeInBit;
+    int inter_amp_enable;
+    int sao_enable;
+    int alf_enable;
+    int slice_set_enable;
+    int gop_size;
+
+    int picture_reorder_delay;
+    int ROI_Coding;
+
+    /* extend info */
+    int img_width;
+    int img_height;
+    int img_widthc;
+    int img_heightc;
+    int auto_crop_right;
+    int auto_crop_bottom;
+
+    int img_width_in_mcu;
+    int img_height_in_mcu;
+    int img_size_in_mcu;
+
+    int img_width_in_lcu;
+    int img_height_in_lcu;
+    int img_size_in_lcu;
+
+    int b4_info_stride;
+    int b4_info_size;
+
+    int lcu_size;
+
+    int seq_weighting_quant_flag;
+
+    int pad_size;
+    int bg_output_flag;
+} avs2_seq_info_t;
 
 typedef struct {            
     int     profile_id;
@@ -89,6 +153,7 @@ typedef struct {
     int     img_height;
     int     output_bit_depth;
     int     frame_rate_code;
+    avs2_seq_info_t seq_info;
 } avs2_info_t;
 
 typedef struct avs2_frame_t {

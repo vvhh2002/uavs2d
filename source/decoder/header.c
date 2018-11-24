@@ -54,10 +54,10 @@ void read_weight_quant_matrix(bs_stream_t *bs, i16s_t seq_wq_matrix[2][64], int 
     if (user_define) {
         int i;
         for (i = 0; i < 16; i++) {
-            seq_wq_matrix[0][i] = UE_V(bs, "weight_quant_coeff");
+            seq_wq_matrix[0][i] = (i16s_t) UE_V(bs, "weight_quant_coeff");
         }
         for (i = 0; i < 64; i++) {
-            seq_wq_matrix[1][i] = UE_V(bs, "weight_quant_coeff");
+            seq_wq_matrix[1][i] = (i16s_t) UE_V(bs, "weight_quant_coeff");
         }
     } else {
         memcpy(seq_wq_matrix[0], tab_WqMDefault4x4, sizeof(tab_WqMDefault4x4));
@@ -453,7 +453,7 @@ int parse_pb_hdr(seq_info_t * seq_info, pic_hdr_t *pichdr, bs_stream_t *bs)
     pichdr->fixed_picture_qp = U_V(bs, 1, "fixed_picture_qp");
     pichdr->picture_qp = U_V(bs, 7, "picture_qp");
 
-    if (!(pichdr->picture_coding_type == 2)) {
+    if (2 != pichdr->picture_coding_type) {
         U_V(bs, 1, "reserved bit");
     }
 

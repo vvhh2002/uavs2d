@@ -30,10 +30,11 @@
 #define _DEFINES_H_
 
 
+
 #define MT_FRM_MAXTHREADS 8
 #define MT_REC_MATTHREADS 1
 
-#define COMPILE_10BIT    1
+#define COMPILE_10BIT    10
 
 /* ---------------------------------------------------------------------------
 * basic type define

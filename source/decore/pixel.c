@@ -117,7 +117,7 @@ static void add_pel_clip(const pel_t *src1, int i_src1, const resi_t *src2, int 
     if (bit_depth == 8){
         for (i = 0; i < height; i++) {
             for (j = 0; j < width; j++) {
-                dst[j] = COM_CLIP3(0, 255, src1[j] + src2[j]);
+                dst[j] = (pel_t) COM_CLIP3(0, 255, src1[j] + src2[j]);
             }
             src1 += i_src1;
             src2 += i_src2;
@@ -126,7 +126,7 @@ static void add_pel_clip(const pel_t *src1, int i_src1, const resi_t *src2, int 
     } else {
         for (i = 0; i < height; i++) {
             for (j = 0; j < width; j++) {
-                dst[j] = COM_CLIP3(0, 1023, src1[j] + src2[j]);
+                dst[j] = (pel_t) COM_CLIP3(0, 1023, src1[j] + src2[j]);
             }
             src1 += i_src1;
             src2 += i_src2;
@@ -140,7 +140,7 @@ void avg_pel(pel_t *dst, int i_dst, pel_t *src1, int i_src1, pel_t *src2, int i_
     int i, j;
     for (i = 0; i < height; i++) {
         for (j = 0; j < width; j++) {
-            dst[j] = (src1[j] + src2[j] + 1) >> 1;
+            dst[j] = (pel_t) ((src1[j] + src2[j] + 1) >> 1);
         }
         dst += i_dst;
         src1 += i_src1;

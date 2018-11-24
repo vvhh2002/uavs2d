@@ -197,7 +197,7 @@ static void dec_all_lcus(avs2_dec_t *h_dec)
                 int compIdx;
                 for (compIdx = 0; compIdx < NUM_ALF_COMPONENT; compIdx++) {
                     if (h_dec->pic_hdr.m_alfPictureParam[compIdx].alf_flag) {
-                        h_dec->alf_params.m_AlfLCUEnabled[lcu_cur_num][compIdx] = aec_alf_lcu_ctrl(h_dec, aec);
+                        h_dec->alf_params.m_AlfLCUEnabled[lcu_cur_num][compIdx] = (char_t) aec_alf_lcu_ctrl(h_dec, aec);
                     } else {
                         h_dec->alf_params.m_AlfLCUEnabled[lcu_cur_num][compIdx] = 0;
                     }
@@ -208,7 +208,7 @@ static void dec_all_lcus(avs2_dec_t *h_dec)
                 init_rec_core_lcu(h_dec->rec, &h_dec->lcu_array[0], lcu_x, lcu_y);
             }
 
-            cu_decode(h_dec, seq->g_uiMaxSizeInBit, lcu_idx);
+            cu_decode(h_dec, (unsigned int) seq->g_uiMaxSizeInBit, (unsigned int) lcu_idx);
 
             AEC_startcode_follows(h_dec, 1);
         }
@@ -236,7 +236,7 @@ static void rec_one_lcu_row(com_rec_t *rec, int lcu_y, com_lcu_t *lcu_row)
     for (lcu_x = 0; lcu_x < seq->img_width_in_lcu; lcu_x++) {
         lcu_idx = (lcu_y * seq->img_width_in_mcu + lcu_x) * N8_SizeScale;
         init_rec_core_lcu(rec, lcu_row + lcu_x, lcu_x, lcu_y);
-        cu_decode_reconstruct(rec, seq->g_uiMaxSizeInBit, lcu_idx);
+        cu_decode_reconstruct(rec, (unsigned int) seq->g_uiMaxSizeInBit, lcu_idx);
     }
     dec_all_loopfilter(rec);
 }
