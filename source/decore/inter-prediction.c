@@ -185,7 +185,7 @@ static void com_if_filter_ver_4(const pel_t *src, int i_src, pel_t *dst, int i_d
         for (col = 0; col < width; col++) {
             sum = FLT_4TAP_VER(src, col, i_src, coeff);
             val = (sum + 32) >> 6;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         src += i_src;
         dst += i_dst;
@@ -201,7 +201,7 @@ static void com_if_filter_ver_8(const pel_t *src, int i_src, pel_t *dst, int i_d
         for (col = 0; col < width; col++) {
             sum = FLT_8TAP_VER(src, col, i_src, coeff);
             val = (sum + 32) >> 6;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         src += i_src;
         dst += i_dst;
@@ -236,7 +236,7 @@ static void com_if_filter_hor_ver_4(const pel_t *src, int i_src, pel_t *dst, int
         for (row = -1; row < height + 2; row++) {
             for (col = 0; col < width; col++) {
                 sum = FLT_4TAP_HOR(src, col, coeff_h);
-                tmp[col] = (sum + add1) >> shift1;
+                tmp[col] = (i16s_t) ((sum + add1) >> shift1);
             }
             src += i_src;
             tmp += 32;
@@ -257,7 +257,7 @@ static void com_if_filter_hor_ver_4(const pel_t *src, int i_src, pel_t *dst, int
         for (col = 0; col < width; col++) {
             sum = FLT_4TAP_VER(tmp, col, 32, coeff_v);
             val = (sum + add2) >> shift2;
-            dst[col] = COM_CLIP3(0, max_val, val);
+            dst[col] = (pel_t) COM_CLIP3(0, max_val, val);
         }
         dst += i_dst;
         tmp += 32;

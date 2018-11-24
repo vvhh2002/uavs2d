@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -162,7 +162,7 @@ static void xPredIntraDCAdi(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, int 
 
     for (y = 0; y < iHeight; y++) {
         for (x = 0; x < iWidth; x++) {
-            dst[x] = iDCValue;
+            dst[x] = (pel_t) iDCValue;
         }
         dst += i_dst;
     }
@@ -576,8 +576,8 @@ static void xPredIntraAngAdi_Y_32(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
     pSrc -= 3;
 
     for (i = 0; i < real_size; i++, pSrc -= 2) {
-        pfirst[0][i] = (pSrc[1] + pSrc[ 0] * 2 + pSrc[-1] + 2) >> 2;
-        pfirst[1][i] = (pSrc[0] + pSrc[-1] * 2 + pSrc[-2] + 2) >> 2;
+        pfirst[0][i] = (pel_t) ((pSrc[1] + pSrc[ 0] * 2 + pSrc[-1] + 2) >> 2);
+        pfirst[1][i] = (pel_t) ((pSrc[0] + pSrc[-1] * 2 + pSrc[-2] + 2) >> 2);
     }
     
     // padding

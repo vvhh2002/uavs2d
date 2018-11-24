@@ -28,6 +28,7 @@
 
 #include "common.h"
 
+
 tab_i16s_t tab_log2size[MAX_CU_SIZE + 1] = {
     -1, -1, -1, -1,  2, -1, -1, -1,
      3, -1, -1, -1, -1, -1, -1, -1,

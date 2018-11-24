@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -149,6 +149,7 @@ int bs_one_unit_init(bs_stream_t *bs, uchar_t *start, uchar_t *end)
         start++;
         len--;
     }
+
 
     if (len < 4) {
         return 0;

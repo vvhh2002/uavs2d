@@ -241,9 +241,11 @@ void alf_flt_one_block_fix(pel_t *imgRes, pel_t *imgPad, int stride, int isChrom
         pixelInt += coef[8] * (imgPad [ 0]);
 
         pixelInt = (int)((pixelInt + 32) >> 6);
-        imgRes[0] = IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
+        imgRes[0] = (pel_t) IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
     }
 }
+
+
 
 void com_funs_init_alf_filter()
 {

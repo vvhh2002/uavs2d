@@ -304,7 +304,7 @@ i32u_t biari_decode_symbol_continu0(aec_core_t * aec, aec_ctx_t * bi_ct, int max
     for (i = 0; i < max_num && !bit; i++) {
         lg_pmps_shift = (lg_pmps >> LG_PMPS_SHIFTNO);
         bit = mps;
-        cwr = max(3, cycno + 2);
+        cwr = (uchar_t) max(3, cycno + 2);
 
         biari_decode_read_inline(aec, s1, val_s, val_t, is_domain, is_bnd);
 
@@ -352,11 +352,11 @@ i32u_t biari_decode_symbol_continu0(aec_core_t * aec, aec_ctx_t * bi_ct, int max
             t1 = t_rlps & 0xff;
 
             // update bi_ct
-            cycno = min(cycno + 1, 3);
+            cycno = (uchar_t) min(cycno + 1, 3);
             lg_pmps += lg_pmps_inc[cwr];
             if (lg_pmps >= (256 << LG_PMPS_SHIFTNO)) {
                 lg_pmps = (512 << LG_PMPS_SHIFTNO) - 1 - lg_pmps;
-                mps = !mps;
+                mps = (uchar_t) !mps;
             }
         }
     }
@@ -369,10 +369,10 @@ i32u_t biari_decode_symbol_continu0(aec_core_t * aec, aec_ctx_t * bi_ct, int max
     aec->is_value_domain = is_domain;
 
     bi_ct->cycno = cycno;
-    bi_ct->LG_PMPS = lg_pmps;
+    bi_ct->LG_PMPS = (i16u_t) lg_pmps;
     bi_ct->MPS = mps;
 
-    return i - bit;
+    return (i32u_t) (i - bit);
 }
 
 i32u_t biari_decode_symbol_continu0_ext(aec_core_t * aec, aec_ctx_t * bi_ct, int max_ctx_inc, int max_num)
@@ -452,13 +452,13 @@ i32u_t biari_decode_symbol_continu0_ext(aec_core_t * aec, aec_ctx_t * bi_ct, int
             t1 = t_rlps & 0xff;
 
             // update bi_ct
-            bi_ct->cycno = min(cycno + 1, 3);
+            bi_ct->cycno = (uchar_t) min(cycno + 1, 3);
             lg_pmps += lg_pmps_inc[cwr];
             if (lg_pmps >= (256 << LG_PMPS_SHIFTNO)) {
                 lg_pmps = (512 << LG_PMPS_SHIFTNO) - 1 - lg_pmps;
-                bi_ct->MPS = !(bi_ct->MPS);
+                bi_ct->MPS = (uchar_t) !(bi_ct->MPS);
             }
-            bi_ct->LG_PMPS = lg_pmps;
+            bi_ct->LG_PMPS = (i16u_t) lg_pmps;
         }
 
         ctx_add++;
@@ -472,5 +472,5 @@ i32u_t biari_decode_symbol_continu0_ext(aec_core_t * aec, aec_ctx_t * bi_ct, int
     aec->is_value_bound  = is_bnd;
     aec->is_value_domain = is_domain;
 
-    return i - bit;
+    return (i32u_t) (i - bit);
 }
