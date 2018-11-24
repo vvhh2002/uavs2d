@@ -13,7 +13,7 @@ include_directories("decore")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -march=native")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native")
 
 
 add_library(uavs2d ${DIR_UAVS2D_SRC} )
