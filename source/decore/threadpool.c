@@ -8,7 +8,7 @@
 #if !defined(_WIN32)
 #define __pragma(a)
 #endif
-
+#include <string.h>
 #define MULTI_LINE_MACRO_BEGIN  do {
 #define MULTI_LINE_MACRO_END \
     __pragma(warning(push))\

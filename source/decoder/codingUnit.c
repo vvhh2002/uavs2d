@@ -343,11 +343,11 @@ static void get_pmv(avs2_dec_t *h_dec, unsigned int uiBitSize, unsigned int cu_i
                     pred_vec = min(mva[2], min(mvb[2], mvc[2]));
 
                     if (pred_vec == mva[2]) {
-                        pmv[1] = (mva[1] + mvb[1]) / 2;
+                        pmv[1] = (i16s_t) ((mva[1] + mvb[1]) / 2);
                     } else if (pred_vec == mvb[2]) {
-                        pmv[1] = (mvb[1] + mvc[1]) / 2;
+                        pmv[1] = (i16s_t) ((mvb[1] + mvc[1]) / 2);
                     } else {
-                        pmv[1] = (mvc[1] + mva[1]) / 2;
+                        pmv[1] = (i16s_t) ((mvc[1] + mva[1]) / 2);
                     }
                 }
 
@@ -391,7 +391,7 @@ static void get_pmv_bskip(avs2_dec_t *h_dec, unsigned int cu_idx, i16s_t fw_pmv[
     ALIGNED_16(i16s_t pmv[6][2][2]);
 
     int j;
-    int bid_flag = 0, bw_flag = 0, fw_flag = 0, sym_flag = 0, bid2;
+    int bid_flag = 0, bw_flag = 0, fw_flag = 0, sym_flag = 0, bid2=0;
     int md_mode = h_dec->cu_loc_dat->md_directskip_mode;
 
     int i_b4 = h_dec->seq->b4_info_stride;
@@ -578,7 +578,7 @@ void init_lcu(avs2_dec_t *h_dec, int lcu_x, int lcu_y)
 
     for (i = 0; i < lcu_height / 8; i++) {
         for (j = 0; j < lcu_width / 8; j++) {
-            cu_array[j].slice_nr = h_dec->current_slice_nr;
+            cu_array[j].slice_nr = (i16s_t) h_dec->current_slice_nr;
         }
         cu_array += seq->img_width_in_mcu;
     }
@@ -621,13 +621,13 @@ static void init_cu(avs2_dec_t *h_dec)
 
     assert(cu_idx >= 0 && cu_idx < h_dec->seq->img_size_in_mcu);
 
-    cu->ui_MbBitSize = cu_bitsize;
+    cu->ui_MbBitSize = (uchar_t) cu_bitsize;
     cu->cuType       = SKIPDIRECT;
     h_dec->cu_loc_dat->dmh_mode = 0;
 
     for (r = 0; r < b8size; r++) {
         for (c = 0; c < b8size; c++) {
-            cu[c].ui_MbBitSize = cu_bitsize;
+            cu[c].ui_MbBitSize = (uchar_t) cu_bitsize;
         }
         cu += h_dec->seq->img_width_in_mcu;
     }
@@ -2681,7 +2681,7 @@ void read_coeffs(avs2_dec_t *h_dec)
 
                     sum = Clip3(0 - (1 << 15), (1 << 15) - 1,  sum);
 
-                    coef_uv[uv][j0 * bsize_x + i0] = sum;
+                    coef_uv[uv][j0 * bsize_x + i0] = (coef_t) sum;
                 } 
                 if (pairs == DCT_PairsInCG[DCT_CGNum - iCG - 1]) {
                     coef_ctr |= 0xf;
