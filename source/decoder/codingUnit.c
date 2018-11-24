@@ -766,7 +766,7 @@ static void PskipMV_COL(avs2_dec_t *h_dec, com_cu_t *cu)
 
         if (refframe >= 0) {
             curT = col_dist[0];
-            colT = COM_ADD_MODE(2 * (col_frm->ref_imgtr - col_pic_poc[refframe]), 512);
+            colT = (int) COM_ADD_MODE(2 * (col_frm->ref_imgtr - col_pic_poc[refframe]), 512);
 
             if (h_dec->pic_hdr.background_reference_enable) {
                 if (h_dec->i_refs == 1) {
@@ -787,10 +787,10 @@ static void PskipMV_COL(avs2_dec_t *h_dec, com_cu_t *cu)
                 getDeltas(h_dec->pic_hdr.is_top_field, &delta, &delta2, oriPOC, oriRefPOC, scaledPOC, scaledRefPOC);
             }
 
-            mv[0] = (curT * col_mv[0] * (MULTI / colT) + HALF_MULTI) >> OFFSET;
-            mv[1] = ((curT * (col_mv[1] + delta) * (MULTI / colT) + HALF_MULTI) >> OFFSET) - delta2;
-            mv[0] = Clip3(-32768, 32767, mv[0]);
-            mv[1] = Clip3(-32768, 32767, mv[1]);
+            mv[0] = (i16s_t) ((curT * col_mv[0] * (MULTI / colT) + HALF_MULTI) >> OFFSET);
+            mv[1] = (i16s_t) (((curT * (col_mv[1] + delta) * (MULTI / colT) + HALF_MULTI) >> OFFSET) - delta2);
+            mv[0] = (i16s_t) Clip3(-32768, 32767, mv[0]);
+            mv[1] = (i16s_t) Clip3(-32768, 32767, mv[1]);
         } else {
             mv[0] = 0;
             mv[1] = 0;
@@ -876,20 +876,20 @@ static void get_pmv_pskip(avs2_dec_t *h_dec, unsigned int cu_idx, int b8size)
 
     for (j = 0; j < 6; j++) {
         if (ref_frames[0][j] >= 0 && ref_frames[1][j] >= 0) {
-            tmp_pref_fst[BID_P_FST] = ref_frames[0][j];
-            tmp_pref_snd[BID_P_FST] = ref_frames[1][j];
-            tmp_1st_mv[BID_P_FST][0] = pmv[0][0][j];
-            tmp_1st_mv[BID_P_FST][1] = pmv[0][1][j];
-            tmp_2nd_mv[BID_P_FST][0] = pmv[1][0][j];
-            tmp_2nd_mv[BID_P_FST][1] = pmv[1][1][j];
+            tmp_pref_fst[BID_P_FST] = (char_t) ref_frames[0][j];
+            tmp_pref_snd[BID_P_FST] = (char_t) ref_frames[1][j];
+            tmp_1st_mv[BID_P_FST][0] = (i16s_t) pmv[0][0][j];
+            tmp_1st_mv[BID_P_FST][1] = (i16s_t) pmv[0][1][j];
+            tmp_2nd_mv[BID_P_FST][0] = (i16s_t) pmv[1][0][j];
+            tmp_2nd_mv[BID_P_FST][1] = (i16s_t) pmv[1][1][j];
             bid_flag++;
             if (bid_flag == 1) {
                 bid2 = j;
             }
         } else if (ref_frames[0][j] >= 0 && ref_frames[1][j] < 0) {
-            tmp_pref_fst[FW_P_FST] = ref_frames[0][j];
-            tmp_1st_mv[FW_P_FST][0] = pmv[0][0][j];
-            tmp_1st_mv[FW_P_FST][1] = pmv[0][1][j];
+            tmp_pref_fst[FW_P_FST] = (char_t) ref_frames[0][j];
+            tmp_1st_mv[FW_P_FST][0] = (i16s_t) pmv[0][0][j];
+            tmp_1st_mv[FW_P_FST][1] = (i16s_t) pmv[0][1][j];
             fw_flag++;
             if (fw_flag == 1) {
                 fw2 = j;
@@ -900,36 +900,36 @@ static void get_pmv_pskip(avs2_dec_t *h_dec, unsigned int cu_idx, int b8size)
     //first bid
     if (bid_flag == 0 && fw_flag > 1) {
         tmp_pref_fst[BID_P_FST] = tmp_pref_fst[FW_P_FST];
-        tmp_pref_snd[BID_P_FST] = ref_frames[0][fw2];
+        tmp_pref_snd[BID_P_FST] = (char_t) ref_frames[0][fw2];
         tmp_1st_mv[BID_P_FST][0] = tmp_1st_mv[FW_P_FST][0];
         tmp_1st_mv[BID_P_FST][1] = tmp_1st_mv[FW_P_FST][1];
-        tmp_2nd_mv[BID_P_FST][0] = pmv[0][0][fw2];
-        tmp_2nd_mv[BID_P_FST][1] = pmv[0][1][fw2];
+        tmp_2nd_mv[BID_P_FST][0] = (i16s_t) pmv[0][0][fw2];
+        tmp_2nd_mv[BID_P_FST][1] = (i16s_t) pmv[0][1][fw2];
     }
 
     if (md_mode == BID_P_SND) {
         if (bid_flag > 1) {
-            tmp_pref_fst[BID_P_SND] = ref_frames[0][bid2];
-            tmp_pref_snd[BID_P_SND] = ref_frames[1][bid2];
-            tmp_1st_mv[BID_P_SND][0] = pmv[0][0][bid2];
-            tmp_1st_mv[BID_P_SND][1] = pmv[0][1][bid2];
-            tmp_2nd_mv[BID_P_SND][0] = pmv[1][0][bid2];
-            tmp_2nd_mv[BID_P_SND][1] = pmv[1][1][bid2];
+            tmp_pref_fst[BID_P_SND] = (char_t) ref_frames[0][bid2];
+            tmp_pref_snd[BID_P_SND] = (char_t) ref_frames[1][bid2];
+            tmp_1st_mv[BID_P_SND][0] = (i16s_t) pmv[0][0][bid2];
+            tmp_1st_mv[BID_P_SND][1] = (i16s_t) pmv[0][1][bid2];
+            tmp_2nd_mv[BID_P_SND][0] = (i16s_t) pmv[1][0][bid2];
+            tmp_2nd_mv[BID_P_SND][1] = (i16s_t) pmv[1][1][bid2];
         } else if (bid_flag == 1 && fw_flag > 1) {
             tmp_pref_fst[BID_P_SND] = tmp_pref_fst[FW_P_FST];
-            tmp_pref_snd[BID_P_SND] = ref_frames[0][fw2];
+            tmp_pref_snd[BID_P_SND] = (char_t) ref_frames[0][fw2];
             tmp_1st_mv[BID_P_SND][0] = tmp_1st_mv[FW_P_FST][0];
             tmp_1st_mv[BID_P_SND][1] = tmp_1st_mv[FW_P_FST][1];
-            tmp_2nd_mv[BID_P_SND][0] = pmv[0][0][fw2];
-            tmp_2nd_mv[BID_P_SND][1] = pmv[0][1][fw2];
+            tmp_2nd_mv[BID_P_SND][0] = (i16s_t) pmv[0][0][fw2];
+            tmp_2nd_mv[BID_P_SND][1] = (i16s_t) pmv[0][1][fw2];
         }
     }
 
     if (md_mode == FW_P_FST) {
         if (fw_flag == 0 && bid_flag > 1) {
-            tmp_pref_fst[FW_P_FST] = ref_frames[0][bid2];
-            tmp_1st_mv[FW_P_FST][0] = pmv[0][0][bid2];
-            tmp_1st_mv[FW_P_FST][1] = pmv[0][1][bid2];
+            tmp_pref_fst[FW_P_FST] = (char_t) ref_frames[0][bid2];
+            tmp_1st_mv[FW_P_FST][0] = (i16s_t) pmv[0][0][bid2];
+            tmp_1st_mv[FW_P_FST][1] = (i16s_t) pmv[0][1][bid2];
         } else if (fw_flag == 0 && bid_flag == 1) {
             tmp_pref_fst[FW_P_FST] = tmp_pref_fst[BID_P_FST];
             tmp_1st_mv[FW_P_FST][0] = tmp_1st_mv[BID_P_FST][0];
@@ -939,13 +939,13 @@ static void get_pmv_pskip(avs2_dec_t *h_dec, unsigned int cu_idx, int b8size)
 
     if (md_mode == FW_P_SND) {
         if (fw_flag > 1) {
-            tmp_pref_fst[FW_P_SND] = ref_frames[0][fw2];
-            tmp_1st_mv[FW_P_SND][0] = pmv[0][0][fw2];
-            tmp_1st_mv[FW_P_SND][1] = pmv[0][1][fw2];
+            tmp_pref_fst[FW_P_SND] = (char_t) ref_frames[0][fw2];
+            tmp_1st_mv[FW_P_SND][0] = (i16s_t) pmv[0][0][fw2];
+            tmp_1st_mv[FW_P_SND][1] = (i16s_t) pmv[0][1][fw2];
         } else if (bid_flag > 1) {
-            tmp_pref_fst[FW_P_SND] = ref_frames[1][bid2];
-            tmp_1st_mv[FW_P_SND][0] = pmv[1][0][bid2];
-            tmp_1st_mv[FW_P_SND][1] = pmv[1][1][bid2];
+            tmp_pref_fst[FW_P_SND] = (char_t) ref_frames[1][bid2];
+            tmp_1st_mv[FW_P_SND][0] = (i16s_t) pmv[1][0][bid2];
+            tmp_1st_mv[FW_P_SND][1] = (i16s_t) pmv[1][1][bid2];
         } else if (bid_flag == 1) {
             tmp_pref_fst[FW_P_SND] = tmp_pref_snd[BID_P_FST];
             tmp_1st_mv[FW_P_SND][0] = tmp_2nd_mv[BID_P_FST][0];
@@ -997,19 +997,19 @@ void interpret_b8pdir_PF(avs2_dec_t *h_dec, int pdir)
         break;
     case 1:
         curr_b8pdir[0] = curr_b8pdir[1] = \
-        curr_b8pdir[2] = curr_b8pdir[3] = (pdir == 0 ? FORWARD : DUAL);
+        curr_b8pdir[2] = curr_b8pdir[3] = (char_t) (pdir == 0 ? FORWARD : DUAL);
         break;
     case 2:
     case 4:
     case 5:
-        curr_b8pdir[0] = curr_b8pdir[1] = pdir0[pdir];
-        curr_b8pdir[2] = curr_b8pdir[3] = pdir1[pdir];
+        curr_b8pdir[0] = curr_b8pdir[1] = (char_t) pdir0[pdir];
+        curr_b8pdir[2] = curr_b8pdir[3] = (char_t) pdir1[pdir];
         break;
     case 3:
     case 6:
     case 7:
-        curr_b8pdir[0] = curr_b8pdir[2] = pdir0[pdir];
-        curr_b8pdir[1] = curr_b8pdir[3] = pdir1[pdir];
+        curr_b8pdir[0] = curr_b8pdir[2] = (char_t) pdir0[pdir];
+        curr_b8pdir[1] = curr_b8pdir[3] = (char_t) pdir1[pdir];
         break;
     case 9:
         curr_b8pdir[0] = curr_b8pdir[1] = \
@@ -1060,7 +1060,7 @@ void interpret_b8pdir_B(avs2_dec_t *h_dec, int pdir)
     {
     case 0:
         curr_b8pdir[0] = curr_b8pdir[1] = \
-        curr_b8pdir[2] = curr_b8pdir[3] = pdir_ext[h_dec->cu_loc_dat->md_directskip_mode];
+        curr_b8pdir[2] = curr_b8pdir[3] = (char_t) pdir_ext[h_dec->cu_loc_dat->md_directskip_mode];
         break;
     case 9:
         curr_b8pdir[0] = curr_b8pdir[1] = \
@@ -1068,19 +1068,19 @@ void interpret_b8pdir_B(avs2_dec_t *h_dec, int pdir)
         break;
     case 1:
         curr_b8pdir[0] = curr_b8pdir[1] = \
-        curr_b8pdir[2] = curr_b8pdir[3] = pdir;
+        curr_b8pdir[2] = curr_b8pdir[3] = (char_t) pdir;
         break;
     case 2:
     case 4:
     case 5:
-        curr_b8pdir[0] = curr_b8pdir[1] = pdir0[pdir];
-        curr_b8pdir[2] = curr_b8pdir[3] = pdir1[pdir];
+        curr_b8pdir[0] = curr_b8pdir[1] = (char_t) pdir0[pdir];
+        curr_b8pdir[2] = curr_b8pdir[3] = (char_t) pdir1[pdir];
         break;
     case 3:
     case 6:
     case 7:
-        curr_b8pdir[0] = curr_b8pdir[2] = pdir0[pdir];
-        curr_b8pdir[1] = curr_b8pdir[3] = pdir1[pdir];
+        curr_b8pdir[0] = curr_b8pdir[2] = (char_t) pdir0[pdir];
+        curr_b8pdir[1] = curr_b8pdir[3] = (char_t) pdir1[pdir];
         break;
     default:
         break;
@@ -1252,7 +1252,7 @@ void read_ipred_block_modes(avs2_dec_t *h_dec, int b8, unsigned int cu_idx)
 
                 for (j = 0; j < (1 << (cu_bitsize + 1 - MIN_CU_SIZE_IN_BIT)); j++) {
                     if (cu_bitsize == 4) {
-                        mode_buf[j * i_stride] = dec_mode;
+                        mode_buf[j * i_stride] = (char_t) dec_mode;
                     } else {
                         mode_buf[j * i_stride] = dec_mode;
                         mode_buf[j * i_stride + 1] = dec_mode;

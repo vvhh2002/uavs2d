@@ -108,11 +108,11 @@ static void xSetEdgeFilterParam(avs2_dec_t *h_dec, unsigned int uiBitSize, unsig
             check_mv_ref &= (cuP->cbp == 0 && cuQ->cbp == 0);
             cuQ += i_b8;
 
-            p_skip[0] = (check_mv_ref && IS_DEBLOCK_SKIPED(0, -1)) ? 0 : flag;
+            p_skip[0] = (uchar_t) ((check_mv_ref && IS_DEBLOCK_SKIPED(0, -1)) ? 0 : flag);
             pref += i_b4;
             pmvbuf += i_b4;
 
-            p_skip[1] = (check_mv_ref && IS_DEBLOCK_SKIPED(0, -1)) ? 0 : flag;
+            p_skip[1] = (uchar_t) ((check_mv_ref && IS_DEBLOCK_SKIPED(0, -1)) ? 0 : flag);
             pref += i_b4;
             pmvbuf += i_b4;
 
@@ -130,11 +130,11 @@ static void xSetEdgeFilterParam(avs2_dec_t *h_dec, unsigned int uiBitSize, unsig
             check_mv_ref &= (cuP->cbp == 0 && cuQ->cbp == 0);
             cuQ++;
 
-            *p_skip++ = (check_mv_ref && IS_DEBLOCK_SKIPED(0, -i_b4)) ? 0 : flag;
+            *p_skip++ = (uchar_t) ((check_mv_ref && IS_DEBLOCK_SKIPED(0, -i_b4)) ? 0 : flag);
             pref++;
             pmvbuf++;
 
-            *p_skip++ = (check_mv_ref && IS_DEBLOCK_SKIPED(0, -i_b4)) ? 0 : flag;
+            *p_skip++ = (uchar_t) ((check_mv_ref && IS_DEBLOCK_SKIPED(0, -i_b4)) ? 0 : flag);
             pref++;
             pmvbuf++;
         }
@@ -147,8 +147,8 @@ void deblock_set_cu_edge(avs2_dec_t *h_dec, unsigned int uiBitSize, unsigned int
     int i;
     com_cu_t *cu = h_dec->cu;
     int cuType = cu->cuType;
-    unsigned int b8_x_start = h_dec->cu_b8_x; 
-    unsigned int b8_y_start = h_dec->cu_b8_y;
+    unsigned int b8_x_start = (unsigned int) h_dec->cu_b8_x;
+    unsigned int b8_y_start = (unsigned int) h_dec->cu_b8_y;
     int flag_deblk_all = 2;
     int flag_deblk_luma = 1;
 
