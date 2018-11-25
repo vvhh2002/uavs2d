@@ -181,13 +181,13 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
 
         for (y = 0; y < smb_pix_height; y++) {
             diff = src[start_x] - src[start_x - 1];
-            leftsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            leftsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             for (x = start_x; x < end_x; x++) {
                 diff = src[x] - src[x + 1];
-                rightsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                rightsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 edgetype = leftsign + rightsign;
                 leftsign = - rightsign;
-                dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+                dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
             }
             dst += i_dst;
             src += i_src;
@@ -203,14 +203,14 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
         for (x = 0; x < smb_pix_width; x++) {
             src = src_base + start_y * i_src;
             diff = src[0] - src[-i_src];
-            upsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             dst = dst_base + start_y * i_dst;
             for (y = start_y; y < end_y; y++) {
                 diff = src[0] - src[i_src];
-                downsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                downsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 edgetype = downsign + upsign;
                 upsign = - downsign;
-                *dst = Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[edgetype + 2]);
+                *dst = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[edgetype + 2]);
                 dst += i_dst;
 				src += i_src;
             }
@@ -230,15 +230,15 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
         //init the line buffer
         for (x = start_x_r + 1; x < end_x_r + 1; x ++) {
             diff = src[x + i_src] - src[x - 1];
-            upsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             signupline[x] = upsign;
         }
         //first row
         for (x = start_x_r0; x < end_x_r0 ; x++) {
             diff = src[x] - src[x - 1 - i_src];
-            upsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             edgetype = upsign - signupline[x + 1];
-            dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+            dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
         }
         dst += i_dst;
         src += i_src;
@@ -248,14 +248,14 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
             for (x = start_x_r; x < end_x_r; x++) {
                 if (x == start_x_r) {
                     diff = src[x] - src[x - 1 - i_src];
-                    upsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                    upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                     signupline[x] = upsign;
                 }
                 diff = src[x] - src[x + 1 + i_src];
-                downsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                downsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 edgetype = downsign + signupline[x];
-                dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
-                signupline[x] = reg;
+                dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+                signupline[x] = (char_t) reg;
                 reg = -downsign;
             }
             dst += i_dst;
@@ -265,13 +265,13 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
         for (x = start_x_rn; x < end_x_rn; x++) {
             if (x == start_x_r) {
                 diff = src[x] - src[x - 1 - i_src];
-                upsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 signupline[x] = upsign;
             }
             diff = src[x] - src[x + 1 + i_src];
-            downsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            downsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             edgetype = downsign + signupline[x];
-            dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+            dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
         }
     }
     break;
@@ -287,15 +287,15 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
         signupline1 = signupline + 1;
         for (x = start_x_r - 1; x < end_x_r - 1; x ++) {
             diff = src[x + i_src] - src[x + 1];
-            upsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             signupline1[x] = upsign;
         }
         //first row
         for (x = start_x_r0; x < end_x_r0; x++) {
             diff = src[x] - src[x + 1 - i_src];
-            upsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             edgetype = upsign - signupline1[x - 1];
-            dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+            dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
         }
         dst += i_dst;
         src += i_src;
@@ -305,13 +305,13 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
             for (x = start_x_r; x < end_x_r; x++) {
                 if (x == end_x_r - 1) {
                     diff = src[x] - src[x + 1 - i_src];
-                    upsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                    upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                     signupline1[x] = upsign;
                 }
                 diff = src[x] - src[x - 1 + i_src];
-                downsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                downsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 edgetype = downsign + signupline1[x];
-                dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+                dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
                 signupline1[x - 1] = -downsign;
             }
             dst += i_dst;
@@ -320,13 +320,13 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
         for (x = start_x_rn; x < end_x_rn; x++) {
             if (x == end_x_r - 1) {
                 diff = src[x] - src[x + 1 - i_src];
-                upsign =  diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+                upsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
                 signupline1[x] = upsign;
             }
             diff = src[x] - src[x - 1 + i_src];
-            downsign = diff > 0 ? 1 : (diff < 0 ? -1 : 0);
+            downsign = (char_t) (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
             edgetype = downsign + signupline1[x];
-            dst[x] = Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
+            dst[x] = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[x] + saoBlkParam->offset[edgetype + 2]);
         }
     }
     break;
@@ -340,19 +340,19 @@ void SAO_on_block(void *p1, void *p2, void *p3, int compIdx, int smb_index, int 
             for (y = 0; y < smb_pix_height; y++) {
                 int tmp = src[0] >> (sample_bit_depth - NUM_SAO_BO_CLASSES_IN_BIT);
                 if (tmp == saoBlkParam->startBand){
-                    *dst = Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[0]);
+                    *dst = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[0]);
                 }
                 else if (tmp == (saoBlkParam->startBand + 1)%32)
                 {
-                    *dst = Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[1]);
+                    *dst = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[1]);
                 }
                 else if (tmp == saoBlkParam->startBand2)
                 {
-                    *dst = Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[2]);
+                    *dst = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[2]);
                 }
                 else if (tmp == (saoBlkParam->startBand2 + 1)%32)
                 {
-                    *dst = Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[3]);
+                    *dst = (pel_t) Clip3(0, ((1 << sample_bit_depth) - 1), src[0] + saoBlkParam->offset[3]);
                 }
                 
                 dst += i_dst;

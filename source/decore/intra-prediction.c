@@ -213,7 +213,7 @@ static void xPredIntraPlaneAdi(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, i
     for (y = 0; y < iHeight; y++) {
         iTmp2 = iTmp;
         for (x = 0; x < iWidth; x++) {
-            dst[x] = Clip3(0, vmax, iTmp2 >> 5);
+            dst[x] = (pel_t) Clip3(0, vmax, iTmp2 >> 5);
             iTmp2 += iB;
         }
         iTmp += iC;
@@ -269,7 +269,7 @@ static void xPredIntraBiAdi(pel_t *pSrc, pel_t *dst, int i_dst, int iWidth, int 
             pTop[x] += pT[x];
             val = ((predx << ishift_y) + (pTop[x] << ishift_x) + wxy + offset) >> ishift_xy ;
             wxy += wy[y];
-            dst[x] = Clip3(0, vmax, val);
+            dst[x] = (pel_t) Clip3(0, vmax, val);
         }
         dst += i_dst;
     }
@@ -308,7 +308,7 @@ static void xPredIntraAngAdi_X(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMode
 
         for (i = 0; i < iWidth; i++) {
             int idx = COM_MIN(iWidth2, iX);
-            dst[i] = (pSrc[idx] * c1 + pSrc[idx + 1] * c2 + pSrc[idx + 2] * c3 + pSrc[idx + 3] * c4 + 64) >> 7;
+            dst[i] = (pel_t)((pSrc[idx] * c1 + pSrc[idx + 1] * c2 + pSrc[idx + 2] * c3 + pSrc[idx + 3] * c4 + 64) >> 7);
             iX++;
         }
         dst_base += i_dst;
@@ -327,7 +327,7 @@ static void xPredIntraAngAdi_X_4(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMo
     pSrc += 3;
 
     for (i = 0; i < real_size; i++, pSrc++) {
-        first_line[i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+        first_line[i] = (pel_t)((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
     }
 
     // padding
@@ -351,7 +351,7 @@ static void xPredIntraAngAdi_X_6(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMo
     pSrc += 2;
 
     for (i = 0; i < real_size; i++, pSrc++) {
-        first_line[i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+        first_line[i] = (pel_t)((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
     }
 
     // padding
@@ -376,8 +376,8 @@ static void xPredIntraAngAdi_X_8(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMo
     pel_t *pfirst[2] = { first_line, first_line + aligned_line_size };
 
     for (i = 0; i < real_size; i++, pSrc++) {
-        pfirst[0][i] = (pSrc[0] + (pSrc[1] + pSrc[2]) * 3 + pSrc[3] + 4) >> 3;
-        pfirst[1][i] = (           pSrc[1] + pSrc[2]  * 2 + pSrc[3] + 2) >> 2;
+        pfirst[0][i] = (pel_t)((pSrc[0] + (pSrc[1] + pSrc[2]) * 3 + pSrc[3] + 4) >> 3);
+        pfirst[1][i] = (pel_t)((           pSrc[1] + pSrc[2]  * 2 + pSrc[3] + 2) >> 2);
     }
 
     // padding
@@ -387,8 +387,8 @@ static void xPredIntraAngAdi_X_8(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMo
         pad1 = pfirst[0][real_size - 1];
         pad2 = pfirst[1][real_size - 1];
         for (; i < line_size; i++) {
-            pfirst[0][i] = pad1;
-            pfirst[1][i] = pad2;
+            pfirst[0][i] = (pel_t) pad1;
+            pfirst[1][i] = (pel_t) pad2;
         }
     }
 
@@ -416,10 +416,10 @@ static void xPredIntraAngAdi_X_10(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
         pel_t *pfirst[4] = { first_line, first_line + aligned_line_size, first_line + aligned_line_size * 2, first_line + aligned_line_size * 3 };
 
         for (i = 0; i < line_size; i++, pSrc++) {
-            pfirst[0][i] = (pSrc[0] * 3 +  pSrc[1] * 7 + pSrc[2]  * 5 + pSrc[3]     + 8) >> 4;
-            pfirst[1][i] = (pSrc[0]     + (pSrc[1]     + pSrc[2]) * 3 + pSrc[3]     + 4) >> 3;
-            pfirst[2][i] = (pSrc[0]     +  pSrc[1] * 5 + pSrc[2]  * 7 + pSrc[3] * 3 + 8) >> 4;
-            pfirst[3][i] = (               pSrc[1]     + pSrc[2]  * 2 + pSrc[3]     + 2) >> 2;
+            pfirst[0][i] =  (pel_t)((pSrc[0] * 3 +  pSrc[1] * 7 + pSrc[2]  * 5 + pSrc[3]     + 8) >> 4);
+            pfirst[1][i] =  (pel_t)((pSrc[0]     + (pSrc[1]     + pSrc[2]) * 3 + pSrc[3]     + 4) >> 3);
+            pfirst[2][i] =  (pel_t)((pSrc[0]     +  pSrc[1] * 5 + pSrc[2]  * 7 + pSrc[3] * 3 + 8) >> 4);
+            pfirst[3][i] =  (pel_t)((               pSrc[1]     + pSrc[2]  * 2 + pSrc[3]     + 2) >> 2);
         }
 
         iHeight /= 4;
@@ -436,10 +436,10 @@ static void xPredIntraAngAdi_X_10(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
         }
     } else {
         for (i = 0; i < iWidth; i++, pSrc++) {
-            dst1[i] = (pSrc[0] * 3 +  pSrc[1] * 7 + pSrc[2]  * 5 + pSrc[3]     + 8) >> 4;
-            dst2[i] = (pSrc[0]     + (pSrc[1]     + pSrc[2]) * 3 + pSrc[3]     + 4) >> 3;
-            dst3[i] = (pSrc[0]     +  pSrc[1] * 5 + pSrc[2]  * 7 + pSrc[3] * 3 + 8) >> 4;
-            dst4[i] = (               pSrc[1]     + pSrc[2]  * 2 + pSrc[3]     + 2) >> 2;
+            dst1[i] = (pel_t) ((pSrc[0] * 3 +  pSrc[1] * 7 + pSrc[2]  * 5 + pSrc[3]     + 8) >> 4);
+            dst2[i] = (pel_t) ((pSrc[0]     + (pSrc[1]     + pSrc[2]) * 3 + pSrc[3]     + 4) >> 3);
+            dst3[i] = (pel_t) ((pSrc[0]     +  pSrc[1] * 5 + pSrc[2]  * 7 + pSrc[3] * 3 + 8) >> 4);
+            dst4[i] = (pel_t) (               (pSrc[1]     + pSrc[2]  * 2 + pSrc[3]     + 2) >> 2);
         }
     }
 }
@@ -469,7 +469,7 @@ static void xPredIntraAngAdi_Y(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMode
             idx = COM_MAX(-iHeight2, -iY);
 
             offset = offsets[i];
-            dst[i] = (pSrc[idx] * (32 - offset) + pSrc[idx - 1] * (64 - offset) + pSrc[idx - 2] * (32 + offset) + pSrc[idx - 3] * offset + 64) >> 7;
+            dst[i] = (pel_t) ((pSrc[idx] * (32 - offset) + pSrc[idx - 1] * (64 - offset) + pSrc[idx - 2] * (32 + offset) + pSrc[idx - 3] * offset + 64) >> 7);
         }
         dst_base += i_dst;
         dst += i_dst;
@@ -485,10 +485,10 @@ static void xPredIntraAngAdi_Y_26(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
         int line_size = iWidth + (iHeight - 1) * 4;
         int iHeight4 = iHeight << 2;
         for (i = 0; i < line_size; i += 4, pSrc--) {
-            first_line[i    ] = (pSrc[0] * 3 +  pSrc[-1] * 7 + pSrc[-2]  * 5 + pSrc[-3]     + 8) >> 4;
-            first_line[i + 1] = (pSrc[0]     + (pSrc[-1]     + pSrc[-2]) * 3 + pSrc[-3]     + 4) >> 3;
-            first_line[i + 2] = (pSrc[0]     +  pSrc[-1] * 5 + pSrc[-2]  * 7 + pSrc[-3] * 3 + 8) >> 4;
-            first_line[i + 3] = (               pSrc[-1]     + pSrc[-2]  * 2 + pSrc[-3]     + 2) >> 2;
+            first_line[i    ] = (pel_t) ((pSrc[0] * 3 + pSrc[-1] * 7 + pSrc[-2] * 5 + pSrc[-3] + 8) >> 4);
+            first_line[i + 1] = (pel_t) ((pSrc[0] + (pSrc[-1] + pSrc[-2]) * 3 + pSrc[-3] + 4) >> 3);
+            first_line[i + 2] = (pel_t) ((pSrc[0] + pSrc[-1] * 5 + pSrc[-2] * 7 + pSrc[-3] * 3 + 8) >> 4);
+            first_line[i + 3] = (pel_t) ((pSrc[-1] + pSrc[-2] * 2 + pSrc[-3] + 2) >> 2);
         }
 
         for (i = 0; i < iHeight4; i += 4) {
@@ -497,10 +497,10 @@ static void xPredIntraAngAdi_Y_26(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
         }
     } else {
         for (i = 0; i < iHeight; i++, pSrc--) {
-            dst[0] = (pSrc[0] * 3 +  pSrc[-1] * 7 + pSrc[-2]  * 5 + pSrc[-3]     + 8) >> 4;
-            dst[1] = (pSrc[0]     + (pSrc[-1]     + pSrc[-2]) * 3 + pSrc[-3]     + 4) >> 3;
-            dst[2] = (pSrc[0]     +  pSrc[-1] * 5 + pSrc[-2]  * 7 + pSrc[-3] * 3 + 8) >> 4;
-            dst[3] = (               pSrc[-1]     + pSrc[-2]  * 2 + pSrc[-3]     + 2) >> 2;
+            dst[0] = (pel_t) ((pSrc[0] * 3 + pSrc[-1] * 7 + pSrc[-2] * 5 + pSrc[-3] + 8) >> 4);
+            dst[1] = (pel_t) ((pSrc[0] + (pSrc[-1] + pSrc[-2]) * 3 + pSrc[-3] + 4) >> 3);
+            dst[2] = (pel_t) ((pSrc[0] + pSrc[-1] * 5 + pSrc[-2] * 7 + pSrc[-3] * 3 + 8) >> 4);
+            dst[3] = (pel_t) ((pSrc[-1] + pSrc[-2] * 2 + pSrc[-3] + 2) >> 2);
             dst += i_dst;
         }
     }
@@ -516,8 +516,8 @@ static void xPredIntraAngAdi_Y_28(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
     int pad1, pad2;
 
     for (i = 0; i < real_size; i += 2, pSrc--) {
-        first_line[i    ] = (pSrc[0] + (pSrc[-1] + pSrc[-2]) * 3 + pSrc[-3] + 4) >> 3;
-        first_line[i + 1] = (           pSrc[-1] + pSrc[-2]  * 2 + pSrc[-3] + 2) >> 2;
+        first_line[i    ] = (pel_t) ((pSrc[0] + (pSrc[-1] + pSrc[-2]) * 3 + pSrc[-3] + 4) >> 3);
+        first_line[i + 1] = (pel_t) ((pSrc[-1] + pSrc[-2] * 2 + pSrc[-3] + 2) >> 2);
     }
 
     // padding
@@ -528,8 +528,8 @@ static void xPredIntraAngAdi_Y_28(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
         pad2 = first_line[i - 1];
 
         for (; i < line_size; i += 2) {
-            first_line[i    ] = pad1;
-            first_line[i + 1] = pad2;
+            first_line[i    ] = (pel_t) pad1;
+            first_line[i + 1] = (pel_t) pad2;
         }
     }
 
@@ -549,7 +549,7 @@ static void xPredIntraAngAdi_Y_30(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirM
     pSrc -= 2;
 
     for (i = 0; i < real_size; i++, pSrc--) {
-        first_line[i] = (pSrc[1] + pSrc[0] * 2 + pSrc[-1] + 2) >> 2;
+        first_line[i] = (pel_t) ((pSrc[1] + pSrc[0] * 2 + pSrc[-1] + 2) >> 2);
     }
 
     // padding
@@ -616,10 +616,10 @@ static void xPredIntraAngAdi_XY(pel_t *pSrc, pel_t *dst, int i_dst, int uiDirMod
         for (i = 0; i < iWidth; i++) {
             iYy = j - xsteps[i];
             if (iYy <= -1) {
-                dst[i] = (pSrc[iXx + 2] * (32 - offsetx) + pSrc[iXx + 1] * (64 - offsetx) + pSrc[iXx] * (32 + offsetx) + pSrc[iXx - 1] * offsetx + 64) >> 7;
+                dst[i] = (pel_t) ((pSrc[iXx + 2] * (32 - offsetx) + pSrc[iXx + 1] * (64 - offsetx) + pSrc[iXx] * (32 + offsetx) + pSrc[iXx - 1] * offsetx + 64) >> 7);
             } else {
                 offsety = xoffsets[i];
-                dst[i] = (rpSrc[-iYy - 2] * (32 - offsety) + rpSrc[-iYy - 1] * (64 - offsety) + rpSrc[-iYy] * (32 + offsety) + rpSrc[-iYy + 1] * offsety + 64) >> 7;
+                dst[i] = (pel_t) ((rpSrc[-iYy - 2] * (32 - offsety) + rpSrc[-iYy - 1] * (64 - offsety) + rpSrc[-iYy] * (32 + offsety) + rpSrc[-iYy + 1] * offsety + 64) >> 7);
             }
             iXx++;
         }
@@ -641,17 +641,17 @@ static void xPredIntraAngAdi_XY_14(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
 
         pSrc -= iHeight - 4;
         for (i = 0; i < left_size; i++, pSrc += 4) {
-            pfirst[0][i] = (pSrc[ 2] + pSrc[3] * 2 + pSrc[ 4] + 2) >> 2;
-            pfirst[1][i] = (pSrc[ 1] + pSrc[2] * 2 + pSrc[ 3] + 2) >> 2;
-            pfirst[2][i] = (pSrc[ 0] + pSrc[1] * 2 + pSrc[ 2] + 2) >> 2;
-            pfirst[3][i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[ 1] + 2) >> 2;
+            pfirst[0][i] = (pel_t) ((pSrc[ 2] + pSrc[3] * 2 + pSrc[ 4] + 2) >> 2);
+            pfirst[1][i] = (pel_t) ((pSrc[ 1] + pSrc[2] * 2 + pSrc[ 3] + 2) >> 2);
+            pfirst[2][i] = (pel_t) ((pSrc[ 0] + pSrc[1] * 2 + pSrc[ 2] + 2) >> 2);
+            pfirst[3][i] = (pel_t) ((pSrc[-1] + pSrc[0] * 2 + pSrc[ 1] + 2) >> 2);
         }
 
         for (; i < line_size; i++, pSrc++) {
-            pfirst[0][i] = (pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4;
-            pfirst[1][i] = (pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3;
-            pfirst[2][i] = (pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4;
-            pfirst[3][i] = (pSrc[-1]     +  pSrc[0] * 2 + pSrc[1]                    + 2) >> 2;
+            pfirst[0][i] = (pel_t) ((pSrc[-1]     + pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4);
+            pfirst[1][i] = (pel_t) ((pSrc[-1]     + (pSrc[0]    + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3);
+            pfirst[2][i] = (pel_t) ((pSrc[-1] * 3 + pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4);
+            pfirst[3][i] = (pel_t) ((pSrc[-1]     + pSrc[0] * 2 + pSrc[1]                    + 2) >> 2);
         }
 
         pfirst[0] += left_size;
@@ -678,10 +678,10 @@ static void xPredIntraAngAdi_XY_14(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
         pel_t *dst4 = dst3 + i_dst;
 
         for (i = 0; i < iWidth; i++, pSrc++) {
-            dst1[i] = (pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4;
-            dst2[i] = (pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3;
-            dst3[i] = (pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4;
-            dst4[i] = (pSrc[-1]     +  pSrc[0] * 2 + pSrc[1]                    + 2) >> 2;
+            dst1[i] = (pel_t) ((pSrc[-1]     + pSrc[0] * 5  + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4);
+            dst2[i] = (pel_t) ((pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3);
+            dst3[i] = (pel_t) ((pSrc[-1] * 3 + pSrc[0] * 7  + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4);
+            dst4[i] = (pel_t) ((pSrc[-1]     + pSrc[0] * 2  + pSrc[1]                    + 2) >> 2);
         }
     }
 }
@@ -699,13 +699,13 @@ static void xPredIntraAngAdi_XY_16(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
     pSrc -= iHeight - 2;
 
     for (i = 0; i < left_size; i++, pSrc+=2) {
-        pfirst[0][i] = (pSrc[ 0] + pSrc[1] * 2 + pSrc[2] + 2) >> 2;
-        pfirst[1][i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+        pfirst[0][i] = (pel_t)((pSrc[ 0] + pSrc[1] * 2 + pSrc[2] + 2) >> 2);
+        pfirst[1][i] = (pel_t)((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
     }
   
     for ( ; i < line_size; i++, pSrc++) {
-        pfirst[0][i] = (pSrc[-1] + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2] + 4) >> 3;
-        pfirst[1][i] = (pSrc[-1] +  pSrc[0] * 2 + pSrc[1]                + 2) >> 2;
+        pfirst[0][i] = (pel_t)((pSrc[-1] + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2] + 4) >> 3);
+        pfirst[1][i] = (pel_t)((pSrc[-1] +  pSrc[0] * 2 + pSrc[1]                + 2) >> 2);
     }
 
     pfirst[0] += left_size;
@@ -730,7 +730,7 @@ static void xPredIntraAngAdi_XY_18(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
     pSrc -= iHeight - 1;
 
     for (i = 0; i < line_size; i++, pSrc++) {
-        first_line[i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+        first_line[i] = (pel_t) ((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
     }
 
     for (i = 0; i < iHeight; i++) {
@@ -752,13 +752,13 @@ static void xPredIntraAngAdi_XY_20(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
     pSrc -= iHeight;
 
     for (i = 0; i < left_size; i += 2, pSrc++) {
-        first_line[i    ] = (pSrc[-1] + (pSrc[0] + pSrc[1]) * 3 + pSrc[2] + 4) >> 3;
-        first_line[i + 1] = (            pSrc[0] + pSrc[1]  * 2 + pSrc[2] + 2) >> 2;
+        first_line[i    ] =(pel_t)( (pSrc[-1] + (pSrc[0] + pSrc[1]) * 3 + pSrc[2] + 4) >> 3);
+        first_line[i + 1] =(pel_t)( (            pSrc[0] + pSrc[1]  * 2 + pSrc[2] + 2) >> 2);
     }
     i--;
 
     for (; i < line_size; i++, pSrc++) {
-        first_line[i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+        first_line[i] = (pel_t) ((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
     }
 
     for (i = 0; i < iHeight; i++) {
@@ -780,15 +780,15 @@ static void xPredIntraAngAdi_XY_22(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
         int line_size = left_size + top_size;
         pel_t *pfirst = first_line + left_size - 3;
         for (i = 0; i < left_size; i += 4, pSrc++) {
-            first_line[i    ] = (pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4;
-            first_line[i + 1] = (pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3;
-            first_line[i + 2] = (pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4;
-            first_line[i + 3] = (                pSrc[0]     + pSrc[1]  * 2 + pSrc[2]     + 2) >> 2;
+            first_line[i    ] = (pel_t)((pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4);
+            first_line[i + 1] = (pel_t)((pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3);
+            first_line[i + 2] = (pel_t)((pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4);
+            first_line[i + 3] = (pel_t)((                pSrc[0]     + pSrc[1]  * 2 + pSrc[2]     + 2) >> 2);
         }
         i--;
 
         for (; i < line_size; i++, pSrc++) {
-            first_line[i] = (pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2;
+            first_line[i] = (pel_t) ((pSrc[-1] + pSrc[0] * 2 + pSrc[1] + 2) >> 2);
         }
 
         for (i = 0; i < iHeight; i++) {
@@ -799,10 +799,10 @@ static void xPredIntraAngAdi_XY_22(pel_t *pSrc, pel_t *dst, int i_dst, int uiDir
     } else {
         dst += (iHeight - 1) * i_dst;
         for (i = 0; i < iHeight; i++, pSrc++) {
-            dst[0] = (pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4;
-            dst[1] = (pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3;
-            dst[2] = (pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4;
-            dst[3] = (                pSrc[0]     + pSrc[1]  * 2 + pSrc[2]     + 2) >> 2;
+            dst[0] = (pel_t)((pSrc[-1] * 3 +  pSrc[0] * 7 + pSrc[1]  * 5 + pSrc[2]     + 8) >> 4);
+            dst[1] = (pel_t)((pSrc[-1]     + (pSrc[0]     + pSrc[1]) * 3 + pSrc[2]     + 4) >> 3);
+            dst[2] = (pel_t)((pSrc[-1]     +  pSrc[0] * 5 + pSrc[1]  * 7 + pSrc[2] * 3 + 8) >> 4);
+            dst[3] = (pel_t)((                pSrc[0]     + pSrc[1]  * 2 + pSrc[2]     + 2) >> 2);
             dst -= i_dst;
         }
     }

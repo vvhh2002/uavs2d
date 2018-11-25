@@ -101,10 +101,10 @@ i32u_t biari_decode_symbol(aec_core_t * aec, aec_ctx_t * bi_ct)
 
     bit = bi_ct->MPS;
 
-    cwr = max(3, cycno + 2);
+    cwr = (uchar_t) max(3, cycno + 2);
     biari_decode_read(aec);
 
-    s_flag = (aec->t1 < lg_pmps_shift);
+    s_flag = (uchar_t) (aec->t1 < lg_pmps_shift);
     s2 = aec->s1 + s_flag;
     t2 = aec->t1 - lg_pmps_shift + (s_flag << 8);
 
@@ -116,10 +116,10 @@ i32u_t biari_decode_symbol(aec_core_t * aec, aec_ctx_t * bi_ct)
         if (cycno == 0) {
             bi_ct->cycno = 1;
         }
-        bi_ct->LG_PMPS = lg_pmps - tmp_pmps - (tmp_pmps >> 2);
+        bi_ct->LG_PMPS = (i16u_t) (lg_pmps - tmp_pmps - (tmp_pmps >> 2));
     } else {   //LPS
         int vt = aec->value_t;
-        bit = !bit; //LPS
+        bit = (uchar_t) !bit; //LPS
         aec->is_value_domain = 1;
 
         t_rlps = (s_flag == 0) ? lg_pmps_shift : (aec->t1 + lg_pmps_shift);
@@ -145,18 +145,18 @@ i32u_t biari_decode_symbol(aec_core_t * aec, aec_ctx_t * bi_ct)
             vt = (vt << 1) | ((aec->buffer >> aec->bits_to_go) & 0x01);
         }
 
-        aec->value_t = vt;
+        aec->value_t = (i32u_t) vt;
         aec->s1 = 0;
         aec->t1 = t_rlps & 0xff;
 
         // update bi_ct
-        bi_ct->cycno = min(cycno + 1, 3);
+        bi_ct->cycno = (uchar_t) min(cycno + 1, 3);
         lg_pmps += lg_pmps_inc[cwr];
         if (lg_pmps >= (256 << LG_PMPS_SHIFTNO)) {
             lg_pmps = (512 << LG_PMPS_SHIFTNO) - 1 - lg_pmps;
-            bi_ct->MPS = !(bi_ct->MPS);
+            bi_ct->MPS = (uchar_t) !(bi_ct->MPS);
         }
-        bi_ct->LG_PMPS = lg_pmps;
+        bi_ct->LG_PMPS = (i16u_t) lg_pmps;
     }
 
     return (bit);
@@ -179,7 +179,7 @@ i32u_t biari_decode_symbol_eq_prob(aec_core_t * aec)
 
     biari_decode_read(aec);
 
-    s_flag = (aec->t1 < 256);
+    s_flag = (uchar_t) (aec->t1 < 256);
     s2 = aec->s1 + s_flag;
     t2 = aec->t1 - 256 + (s_flag << 8);
 
@@ -215,7 +215,7 @@ i32u_t biari_decode_symbol_eq_prob(aec_core_t * aec)
             vt = (vt << 1) | ((aec->buffer >> aec->bits_to_go) & 0x01);
         }
 
-        aec->value_t = vt;
+        aec->value_t = (i32u_t) vt;
         aec->s1 = 0;
         aec->t1 = t_rlps & 0xff;
 
@@ -240,7 +240,7 @@ i32u_t biari_decode_final(aec_core_t * aec)
         t2 = aec->t1 - 1;
         s_flag = 0;
     } else {
-        s2 = aec->s1 + 1;
+        s2 = (uchar_t) (aec->s1 + 1);
         t2 = 255;
         s_flag = 1;
     }
@@ -308,7 +308,7 @@ i32u_t biari_decode_symbol_continu0(aec_core_t * aec, aec_ctx_t * bi_ct, int max
 
         biari_decode_read_inline(aec, s1, val_s, val_t, is_domain, is_bnd);
 
-        s_flag = (t1 < lg_pmps_shift);
+        s_flag = (uchar_t) (t1 < lg_pmps_shift);
         s2 = s1 + s_flag;
         t2 = t1 - lg_pmps_shift + (s_flag << 8);
 
@@ -322,7 +322,7 @@ i32u_t biari_decode_symbol_continu0(aec_core_t * aec, aec_ctx_t * bi_ct, int max
             }
             lg_pmps = lg_pmps - tmp_pmps - (tmp_pmps >> 2);
         } else {   //LPS
-            bit = !bit; //LPS
+            bit = (uchar_t) !bit; //LPS
             is_domain = 1;
 
             t_rlps = (s_flag == 0) ? lg_pmps_shift : (t1 + lg_pmps_shift);
@@ -404,11 +404,11 @@ i32u_t biari_decode_symbol_continu0_ext(aec_core_t * aec, aec_ctx_t * bi_ct, int
 
         bit = bi_ct->MPS;
 
-        cwr = max(3, cycno + 2);
+        cwr = (uchar_t) max(3, cycno + 2);
 
         biari_decode_read_inline(aec, s1, val_s, val_t, is_domain, is_bnd);
 
-        s_flag = (t1 < lg_pmps_shift);
+        s_flag = (uchar_t) (t1 < lg_pmps_shift);
         s2 = s1 + s_flag;
         t2 = t1 - lg_pmps_shift + (s_flag << 8);
 
@@ -420,9 +420,9 @@ i32u_t biari_decode_symbol_continu0_ext(aec_core_t * aec, aec_ctx_t * bi_ct, int
             if (cycno == 0) {
                 bi_ct->cycno = 1;
             }
-            bi_ct->LG_PMPS = lg_pmps - tmp_pmps - (tmp_pmps >> 2);
+            bi_ct->LG_PMPS = (i16u_t) (lg_pmps - tmp_pmps - (tmp_pmps >> 2));
         } else {   //LPS
-            bit = !bit; //LPS
+            bit = (uchar_t) !bit; //LPS
             is_domain = 1;
 
             t_rlps = (s_flag == 0) ? lg_pmps_shift : (t1 + lg_pmps_shift);

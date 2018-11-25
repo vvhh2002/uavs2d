@@ -137,10 +137,10 @@ static void partialButterflyInverse4x4(coef_t *src, coef_t *dst, int shift, int 
         O[0] = tab_trans_core_4[1][0] * src[4] + tab_trans_core_4[3][0] * src[12];
         O[1] = tab_trans_core_4[3][0] * src[4] - tab_trans_core_4[1][0] * src[12];
 
-        dst[0] = COM_CLIP3(min_val, max_val, (E[0] + O[0] + add) >> shift);
-        dst[2] = COM_CLIP3(min_val, max_val, (E[1] - O[1] + add) >> shift);
-        dst[1] = COM_CLIP3(min_val, max_val, (E[1] + O[1] + add) >> shift);
-        dst[3] = COM_CLIP3(min_val, max_val, (E[0] - O[0] + add) >> shift);
+        dst[0] =  (coef_t)COM_CLIP3(min_val, max_val, (E[0] + O[0] + add) >> shift);
+        dst[2] =  (coef_t)COM_CLIP3(min_val, max_val, (E[1] - O[1] + add) >> shift);
+        dst[1] =  (coef_t)COM_CLIP3(min_val, max_val, (E[1] + O[1] + add) >> shift);
+        dst[3] =  (coef_t)COM_CLIP3(min_val, max_val, (E[0] - O[0] + add) >> shift);
         dst += 4;
         src += 1;
     }
@@ -161,10 +161,10 @@ static void partialButterflyInverse4x16(coef_t *src, coef_t *dst, int shift, int
         O[0] = tab_trans_core_4[1][0] * src[1 * 16] + tab_trans_core_4[3][0] * src[3 * 16];
         O[1] = tab_trans_core_4[3][0] * src[1 * 16] - tab_trans_core_4[1][0] * src[3 * 16];
 
-        dst[0] = COM_CLIP3(min_val, max_val, (E[0] + O[0] + add) >> shift);
-        dst[2] = COM_CLIP3(min_val, max_val, (E[1] - O[1] + add) >> shift);
-        dst[1] = COM_CLIP3(min_val, max_val, (E[1] + O[1] + add) >> shift);
-        dst[3] = COM_CLIP3(min_val, max_val, (E[0] - O[0] + add) >> shift);
+        dst[0] = (coef_t) COM_CLIP3(min_val, max_val, (E[0] + O[0] + add) >> shift);
+        dst[2] = (coef_t) COM_CLIP3(min_val, max_val, (E[1] - O[1] + add) >> shift);
+        dst[1] = (coef_t) COM_CLIP3(min_val, max_val, (E[1] + O[1] + add) >> shift);
+        dst[3] = (coef_t) COM_CLIP3(min_val, max_val, (E[0] - O[0] + add) >> shift);
         dst += 4;
         src += 1;
     }
@@ -197,8 +197,8 @@ static void partialButterflyInverse8x8(coef_t *src, coef_t *dst, int shift, int 
         E[1] = EE[1] + EO[1];
         E[2] = EE[1] - EO[1];
         for (k = 0; k < 4; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 4] = COM_CLIP3(min_val, max_val, (E[3 - k] - O[3 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 4] = (coef_t) COM_CLIP3(min_val, max_val, (E[3 - k] - O[3 - k] + add) >> shift);
         }
         dst += 8;
         src += 1;
@@ -232,8 +232,8 @@ static void partialButterflyInverse8x32(coef_t *src, coef_t *dst, int shift, int
         E[1] = EE[1] + EO[1];
         E[2] = EE[1] - EO[1];
         for (k = 0; k < 4; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 4] = COM_CLIP3(min_val, max_val, (E[3 - k] - O[3 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 4] = (coef_t) COM_CLIP3(min_val, max_val, (E[3 - k] - O[3 - k] + add) >> shift);
         }
         dst += 8;
         src += 1;
@@ -275,8 +275,8 @@ static void partialButterflyInverse16x16(coef_t *src, coef_t *dst, int shift, in
             E[k + 4] = EE[3 - k] - EO[3 - k];
         }
         for (k = 0; k < 8; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 8] = COM_CLIP3(min_val, max_val, (E[7 - k] - O[7 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 8] = (coef_t) COM_CLIP3(min_val, max_val, (E[7 - k] - O[7 - k] + add) >> shift);
         }
         dst += 16;
         src += 1;
@@ -318,8 +318,8 @@ static void partialButterflyInverse16x4(coef_t *src, coef_t *dst, int shift, int
             E[k + 4] = EE[3 - k] - EO[3 - k];
         }
         for (k = 0; k < 8; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 8] = COM_CLIP3(min_val, max_val, (E[7 - k] - O[7 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 8] = (coef_t) COM_CLIP3(min_val, max_val, (E[7 - k] - O[7 - k] + add) >> shift);
         }
         dst += 16;
         src += 1;
@@ -372,8 +372,8 @@ static void partialButterflyInverse32x32(coef_t *src, coef_t *dst, int shift, in
             E[k + 8] = EE[7 - k] - EO[7 - k];
         }
         for (k = 0; k < 16; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 16] = COM_CLIP3(min_val, max_val, (E[15 - k] - O[15 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 16] = (coef_t) COM_CLIP3(min_val, max_val, (E[15 - k] - O[15 - k] + add) >> shift);
         }
         dst += 32;
         src += 1;
@@ -426,8 +426,8 @@ static void partialButterflyInverse32x8(coef_t *src, coef_t *dst, int shift, int
             E[k + 8] = EE[7 - k] - EO[7 - k];
         }
         for (k = 0; k < 16; k++) {
-            dst[k] = COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
-            dst[k + 16] = COM_CLIP3(min_val, max_val, (E[15 - k] - O[15 - k] + add) >> shift);
+            dst[k] = (coef_t) COM_CLIP3(min_val, max_val, (E[k] + O[k] + add) >> shift);
+            dst[k + 16] = (coef_t) COM_CLIP3(min_val, max_val, (E[15 - k] - O[15 - k] + add) >> shift);
         }
         dst += 32;
         src += 1;
@@ -649,7 +649,7 @@ static void inv_2nd_trans_hor(coef_t *blk, int i_blk, int shift, const i16s_t co
                 + coef[2][i] * tmpSrc[j][2]
                 + coef[3][i] * tmpSrc[j][3];
 
-            dst[j * i_blk] = Clip3(-32768, 32767, sum >> shift);
+            dst[j * i_blk] = (coef_t) Clip3(-32768, 32767, sum >> shift);
         }
         dst += 1;
     }
@@ -709,7 +709,7 @@ static void inv_2nd_trans(coef_t *blk, int i_blk, int shift, int clip_depth, con
                 + coef[2][i] * tmpSrc[2][j]
                 + coef[3][i] * tmpSrc[3][j];
 
-            dst[j] = Clip3(-32768, 32767, sum >> 5);
+            dst[j] = (coef_t) Clip3(-32768, 32767, sum >> 5);
         }
         dst += i_blk;
     }
@@ -735,7 +735,7 @@ static void inv_2nd_trans(coef_t *blk, int i_blk, int shift, int clip_depth, con
                 + coef[2][i] * tmpSrc[j][2]
                 + coef[3][i] * tmpSrc[j][3];
 
-            dst[j * i_blk] = Clip3(min_val, max_val, sum >> shift);
+            dst[j * i_blk] = (coef_t) Clip3(min_val, max_val, sum >> shift);
         }
         dst += 1;
     }
@@ -859,7 +859,7 @@ void core_inv_trans_nsqt(com_rec_t *rec, coef_t *blk, unsigned int trans_BitSize
     const seq_info_t *seq = rec->seq;
     int secT_enabled = seq->b_secT_enabled;
     int sample_bit_depth = seq->sample_bit_depth;
-    int iSizeX, iSizeY;
+    int iSizeX=0, iSizeY=0;
     int iHor = 0;
 
     int shift, clip;

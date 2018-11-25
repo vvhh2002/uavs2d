@@ -75,7 +75,7 @@ void dec_add_idct(com_rec_t *rec, int block8x8, int qp, coef_t *blk, int uiBitSi
     }
 
     if (rec->cu->cbp & (1 << block8x8)) {
-        core_inv_trans(rec, blk, uiBitSize, block8x8);
+        core_inv_trans(rec, blk, (unsigned int) uiBitSize, block8x8);
         g_funs_handle.add_pel_clip(dst, i_dst, blk, Size, dst, i_dst, Size, Size, rec->seq->sample_bit_depth);
     }
 }
@@ -303,7 +303,7 @@ void dec_intra_pred(com_rec_t *rec, int img_x, int img_y, int uiBitSize)    //ne
         }
     } else {
         for (i = 0; i <= 2 * bs_x; i++) {
-            edge[i] = defalt_val;
+            edge[i] = (pel_t) defalt_val;
         }
     }
 
@@ -371,7 +371,7 @@ void dec_intra_pred(com_rec_t *rec, int img_x, int img_y, int uiBitSize)    //ne
         edgepixels_trans_y[y] = edge[-y];
     }
 
-    core_intra_get_luma(edge, dst, i_dst, predmode, uiBitSize, block_available_up, block_available_left, bs_y, bs_x, seq->sample_bit_depth);
+    core_intra_get_luma(edge, dst, i_dst, predmode, (unsigned int) uiBitSize, block_available_up, block_available_left, bs_y, bs_x, seq->sample_bit_depth);
 }
 
 void dec_intra_pred_chroma(com_rec_t *rec, int uv)
@@ -542,7 +542,7 @@ void dec_intra_pred_chroma(com_rec_t *rec, int uv)
         }
     } else {
         for (i = -2 * bs_y; i < 0; i++) {
-            edge[i] = default_val;
+            edge[i] = (pel_t) default_val;
         }
     }
 
@@ -574,7 +574,7 @@ void dec_intra_pred_chroma(com_rec_t *rec, int uv)
         edgepixels_trans_y[y] = edge[-y];
     }
 
-    core_intra_get_chroma(edge, dst, i_dst, cu->c_ipred_mode, cu_bitsize - 1, mb_available_up, mb_available_left, predLmode, seq->sample_bit_depth);
+    core_intra_get_chroma(edge, dst, i_dst, cu->c_ipred_mode, (unsigned int) (cu_bitsize - 1), mb_available_up, mb_available_left, predLmode, seq->sample_bit_depth);
 }
 
 void dec_inter_pred(com_rec_t *rec)

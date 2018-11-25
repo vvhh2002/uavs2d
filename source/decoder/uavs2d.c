@@ -753,24 +753,20 @@ AVS2_API void *__cdecl uavs2d_lib_create(int frm_threads, int rec_threads)
     com_funs_init_alf_filter();
 
 #if COMPILE_10BIT
-
+    #if defined(__x86_64__)
+    
     com_init_intrinsic_10bit();
     if (simd_avx_level(NULL) >= 2) {
         com_init_intrinsic_256_10bit();
     }
-#if defined(__aarch64__)
+    
+    #elif defined(__aarch64__)
+    
     com_init_neon128();
-#endif
 
-#else
-    #if defined(__aarch64__)
-                com_init_neon128();
-#else
-                com_init_intrinsic();
-                if (simd_avx_level(NULL) >= 2) {
-                    com_init_intrinsic_256();
-                }
-#endif
+    #else
+    
+    #endif
 #endif
 
 

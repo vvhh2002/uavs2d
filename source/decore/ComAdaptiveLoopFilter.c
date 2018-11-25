@@ -123,7 +123,7 @@ void alf_flt_one_block(pel_t *imgRes, pel_t *imgPad, int stride, int isChroma, i
 
             pixelInt = (int)((pixelInt + 32) >> 6);
 
-            imgRes[j] = IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
+            imgRes[j] = (pel_t) IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
 
         }
         imgPad += stride;
@@ -163,7 +163,7 @@ void alf_flt_one_block_fix(pel_t *imgRes, pel_t *imgPad, int stride, int isChrom
         pixelInt += coef[8] * (imgPad [ 0]);
 
         pixelInt = (int)((pixelInt + 32) >> 6);
-        imgRes[0] = IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
+        imgRes[0] = (pel_t) IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
     }
 
     imgPad += lcu_width - 1;
@@ -188,7 +188,7 @@ void alf_flt_one_block_fix(pel_t *imgRes, pel_t *imgPad, int stride, int isChrom
         pixelInt += coef[8] * (imgPad [ 0]);
 
         pixelInt = (int)((pixelInt + 32) >> 6);
-        imgRes[0] = IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
+        imgRes[0] = (pel_t) IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
     }
 
     /* last line */
@@ -216,7 +216,7 @@ void alf_flt_one_block_fix(pel_t *imgRes, pel_t *imgPad, int stride, int isChrom
         pixelInt += coef[8] * (imgPad [ 0]);
 
         pixelInt = (int)((pixelInt + 32) >> 6);
-        imgRes[0] = IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
+        imgRes[0] = (pel_t) IClip(0, ((1 << sample_bit_depth) - 1), pixelInt);
     }
 
     imgPad += lcu_width - 1;

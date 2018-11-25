@@ -123,7 +123,7 @@ void com_pic_yuv_copy_ext(com_pic_t *dst, com_pic_t *src)
     assert(dst->i_stridec == src->i_stridec);
     assert(dst->i_data_len == src->i_data_len);
 
-    memcpy(dst->p_data, src->p_data, src->i_data_len);
+    memcpy(dst->p_data, src->p_data, (size_t) src->i_data_len);
 }
 
 void com_pic_yuv_copy_rows_ext(com_pic_t *dst, com_pic_t *src, int start, int end, int cpy_flag[3])
@@ -176,8 +176,8 @@ void com_pic_yuv_copy_rows_ext(com_pic_t *dst, com_pic_t *src, int start, int en
 void com_pic_yuv_copy_block(com_pic_t *dst, com_pic_t *src, int x, int y, int width, int height, int plane)
 {
     int i;
-    pel_t *d, *s;
-    int i_d, i_s;
+    pel_t *d=NULL, *s=NULL;
+    int i_d=0, i_s=0;
     switch (plane) {
     case 0:
         d = dst->p_y;

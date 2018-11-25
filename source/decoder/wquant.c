@@ -133,10 +133,10 @@ void drive_pic_wq_matrix_param(i32s_t *param_vector, int mode, i16s_t pic_wq_mat
 {
     int i;
     for (i = 0; i < 16; i++) {
-        pic_wq_matrix[0][i] = param_vector[tab_WeightQuantModel4x4[mode][i]];
+        pic_wq_matrix[0][i] = (i16s_t) param_vector[tab_WeightQuantModel4x4[mode][i]];
     }
     for (i = 0; i < 64; i++) {
-        pic_wq_matrix[1][i] = param_vector[tab_WeightQuantModel[mode][i]];
+        pic_wq_matrix[1][i] = (i16s_t) param_vector[tab_WeightQuantModel[mode][i]];
     }
 }
 

@@ -5,8 +5,10 @@ project(utest)
 aux_source_directory(. DIR_SRC_TEST)
 
 add_subdirectory(source)
+if (CMAKE_SYSTEM_NAME STREQUAL Darwin)
 find_library(OPENGL_FRAMEWORK OpenGL)
 find_library(GLUT_FRAMEWORK GLUT)
+endif()
 add_executable(utest ${DIR_SRC_TEST})
 
 target_link_libraries(utest PRIVATE uavs2d m pthread ${GLUT_FRAMEWORK} ${OPENGL_FRAMEWORK})

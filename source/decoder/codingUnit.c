@@ -1264,13 +1264,13 @@ void read_ipred_block_modes(avs2_dec_t *h_dec, int b8, unsigned int cu_idx)
                 
                 for (j = 0; j < sb4size; j++) {
                     for (i = 0; i < sb4size; i++) {
-                        mode_buf[i] = dec_mode;
+                        mode_buf[i] = (char_t) dec_mode;
                     }
                     mode_buf += i_stride;
                 }
             }
         }
-        h_dec->cu_loc_dat->intra_pred_modes[b8] = dec_mode;
+        h_dec->cu_loc_dat->intra_pred_modes[b8] = (char_t) dec_mode;
 
     } else {
         int cipred = aec_intra_pred_mode_c(h_dec, aec);
@@ -1280,7 +1280,7 @@ void read_ipred_block_modes(avs2_dec_t *h_dec, int b8, unsigned int cu_idx)
 
             for (j = 0; j < sb4size; j++, pos++) {
                 com_cu_t *tmpMB = &h_dec->cu_array[pos];
-                tmpMB->c_ipred_mode = cipred;
+                tmpMB->c_ipred_mode = (char_t) cipred;
             }
         }
     }
@@ -1320,7 +1320,7 @@ void read_cu_hdr(avs2_dec_t *h_dec, int *real_cuType)
         cuType = max(*real_cuType, 0);
     }
 
-    cu->cuType = cuType;
+    cu->cuType = (char_t) cuType;
 
     if (h_dec->type == B_IMG && (cuType >= P2NX2N && cuType <= PVER_RIGHT)) {
         pdir = aec_bpred_dir(h_dec, aec);
@@ -1643,8 +1643,8 @@ void fill_bskip_blk(avs2_dec_t *h_dec, com_cu_t *cu)
             for (c = 0; c < b4size; c++) {
                 CP32(fwd_mv[c], fmv);
                 CP32(bwd_mv[c], bmv);
-                fwd_ref[c] = tmp_fwd_ref;
-                bwd_ref[c] = tmp_bwd_ref;
+                fwd_ref[c] = (char_t) tmp_fwd_ref;
+                bwd_ref[c] = (char_t) tmp_bwd_ref;
             }
             fwd_ref += i_b4;
             bwd_ref += i_b4;
@@ -1686,7 +1686,7 @@ static void fill_pskip_blk(avs2_dec_t *h_dec, com_cu_t *cu)
                         }
                     }
                     
-                    h_dec->snd_ref[(block8_y + j) * i_b4 + block8_x + i] = weighted_skipmode;
+                    h_dec->snd_ref[(block8_y + j) * i_b4 + block8_x + i] = (char_t) weighted_skipmode;
 
                     tmv[0] = (int)((delta[weighted_skipmode] * fw_mv[i][0] * (MULTI / delta[0]) + HALF_MULTI) >> OFFSET);
                     
@@ -1702,8 +1702,8 @@ static void fill_pskip_blk(avs2_dec_t *h_dec, com_cu_t *cu)
                         tmv[1] = (int)((delta[weighted_skipmode] * fw_mv[i][1] * (MULTI / delta[0]) + HALF_MULTI) >> OFFSET);
 					}
 
-                    bw_mv[i][0] = Clip3(-32768, 32767, tmv[0]);
-                    bw_mv[i][1] = Clip3(-32768, 32767, tmv[1]);
+                    bw_mv[i][0] = (i16s_t) Clip3(-32768, 32767, tmv[0]);
+                    bw_mv[i][1] = (i16s_t) Clip3(-32768, 32767, tmv[1]);
                 } else {
                     h_dec->snd_ref[(block8_y + j) * i_b4 + block8_x + i] = -1;
                     M32(bw_mv[i]) = 0;
@@ -2082,7 +2082,7 @@ void read_ref(avs2_dec_t *h_dec)
 
                 for (r = 0; r < step_v0 * tmp_step_v; r++) {
                     for (c = 0; c < step_h0 * tmp_step_h; c++) {
-                        fwd_ref[c] = refframe;
+                        fwd_ref[c] = (char_t) refframe;
                     }
                     fwd_ref += i_b4;
                 }
@@ -2110,7 +2110,7 @@ void read_ref(avs2_dec_t *h_dec)
                 bwd_ref = h_dec->snd_ref + b4_y * i_b4 + b4_x;
                 for (r = 0; r < step_v0 * tmp_step_v; r++) {
                     for (c = 0; c < step_h0 * tmp_step_h; c++) {
-                        bwd_ref[c] = (fwd_ref[c] == 0 ? 1 : 0);
+                        bwd_ref[c] = (char_t) (fwd_ref[c] == 0 ? 1 : 0);
                     }
                     fwd_ref += i_b4;
                     bwd_ref += i_b4;
@@ -2152,8 +2152,8 @@ void pmvr_mv_derivation(i16s_t mv[2], i16s_t mvd[2], i16s_t mvp[2])
         tmv[1] = mvd[1] + mvp[1];
     }
 
-    mv[0] = Clip3(-32768, 32767, tmv[0]);
-    mv[1] = Clip3(-32768, 32767, tmv[1]);
+    mv[0] = (i16s_t) Clip3(-32768, 32767, tmv[0]);
+    mv[1] = (i16s_t) Clip3(-32768, 32767, tmv[1]);
 }
 
 /*
@@ -2203,7 +2203,7 @@ void read_mv(avs2_dec_t *h_dec)
     /* read dmh mode */
     if (h_dec->type == F_IMG && (b8pdir[0] + b8pdir[1] + b8pdir[2] + b8pdir[3]) == 0) {
         if (cuType && (cu_bitsize != B8X8_IN_BIT || cuType == P2NX2N)) {
-            h_dec->cu_loc_dat->dmh_mode = aec_dmh_mode(aec, cu_bitsize);
+            h_dec->cu_loc_dat->dmh_mode = (char_t) aec_dmh_mode(aec, cu_bitsize);
         }
     }
 
@@ -2223,8 +2223,8 @@ void read_mv(avs2_dec_t *h_dec)
                 get_pmv(h_dec, cu_bitsize, cu_idx, pmv, h_dec->frm_cur->refbuf, h_dec->frm_cur->mvbuf, h_dec->frm_cur->refbuf[j8 *i_b4 + i8], pix_start_x, pix_start_y, pix_step_h, pix_step_v, 0, 0);    //Lou 1016
 
                 if (h_dec->typeb != BP_IMG) {  //no mvd for S frame, just set it to 0
-                    pmvr_mvd[0] = aec_mvd(h_dec, aec, 0);
-                    pmvr_mvd[1] = aec_mvd(h_dec, aec, 1);
+                    pmvr_mvd[0] = (i16s_t) aec_mvd(h_dec, aec, 0);
+                    pmvr_mvd[1] = (i16s_t) aec_mvd(h_dec, aec, 1);
                 } else {
                     M32(pmvr_mvd) = 0;
                 }
@@ -2234,8 +2234,8 @@ void read_mv(avs2_dec_t *h_dec)
                 } else {
                     pmvr_mv[0] = pmvr_mvd[0] + pmv[0];
                     pmvr_mv[1] = pmvr_mvd[1] + pmv[1];
-                    pmvr_mv[0] = Clip3(-32768, 32767, pmvr_mv[0]);
-                    pmvr_mv[1] = Clip3(-32768, 32767, pmvr_mv[1]);
+                    pmvr_mv[0] = (i16s_t) Clip3(-32768, 32767, pmvr_mv[0]);
+                    pmvr_mv[1] = (i16s_t) Clip3(-32768, 32767, pmvr_mv[1]);
                 }
 
                 fw_mv = h_dec->frm_cur->mvbuf + j8 * i_b4 + i8;
@@ -2282,7 +2282,7 @@ void read_mv(avs2_dec_t *h_dec)
                         int refframe = h_dec->frm_cur->refbuf[j8 * i_b4 + i8];
 
                         DistanceIndexFw = h_dec->ref_list[0].dist[0];
-                        DistanceIndexBw = COM_ADD_MODE((refframe + 1) * 2 * (h_dec->imgtr_next_P - h_dec->ref_list[1].ref_imgtr) - DistanceIndexFw, 512);
+                        DistanceIndexBw = (int) COM_ADD_MODE((refframe + 1) * 2 * (h_dec->imgtr_next_P - h_dec->ref_list[1].ref_imgtr) - DistanceIndexFw, 512);
 
                         mvd[0] = -((fmv[0] * DistanceIndexBw * (MULTI / DistanceIndexFw) + HALF_MULTI) >> OFFSET);
                         
@@ -2300,12 +2300,12 @@ void read_mv(avs2_dec_t *h_dec)
                             mvd[1] = -((fmv[1] * DistanceIndexBw * (MULTI / DistanceIndexFw) + HALF_MULTI) >> OFFSET);
                         }
 
-                        pmvr_mv[0] = Clip3(-32768, 32767, mvd[0]);
-                        pmvr_mv[1] = Clip3(-32768, 32767, mvd[1]);
+                        pmvr_mv[0] = (i16s_t) Clip3(-32768, 32767, mvd[0]);
+                        pmvr_mv[1] = (i16s_t) Clip3(-32768, 32767, mvd[1]);
                         mvd[0] = mvd[0] - pmv[0];
                         mvd[1] = mvd[1] - pmv[1];
-                        pmvr_mvd[0] = Clip3(-32768, 32767, mvd[0]);
-                        pmvr_mvd[1] = Clip3(-32768, 32767, mvd[1]);
+                        pmvr_mvd[0] = (i16s_t) Clip3(-32768, 32767, mvd[0]);
+                        pmvr_mvd[1] = (i16s_t) Clip3(-32768, 32767, mvd[1]);
                 } else if (b8pdir[2 * j0 + i0] == DUAL) {
                         int DistanceIndexFw, DistanceIndexBw;
                         int fw_refframe = h_dec->frm_cur->refbuf[j8* i_b4 + i8];
@@ -2339,20 +2339,20 @@ void read_mv(avs2_dec_t *h_dec)
                             mvd[1] = (fmv[1] * DistanceIndexBw * (MULTI / DistanceIndexFw) + HALF_MULTI) >> OFFSET;
                         }
 
-                        pmvr_mv[0] = Clip3(-32768, 32767, mvd[0]);
-                        pmvr_mv[1] = Clip3(-32768, 32767, mvd[1]);
+                        pmvr_mv[0] = (i16s_t) Clip3(-32768, 32767, mvd[0]);
+                        pmvr_mv[1] = (i16s_t) Clip3(-32768, 32767, mvd[1]);
                         mvd[0] = mvd[0] - pmv[0];
                         mvd[1] = mvd[1] - pmv[1];
-                        pmvr_mvd[0] = Clip3(-32768, 32767, mvd[0]);
-                        pmvr_mvd[1] = Clip3(-32768, 32767, mvd[1]);
+                        pmvr_mvd[0] = (i16s_t) Clip3(-32768, 32767, mvd[0]);
+                        pmvr_mvd[1] = (i16s_t) Clip3(-32768, 32767, mvd[1]);
          
                 } else {
                     mvd[0] = aec_mvd(h_dec, aec, 0);
                     mvd[1] = aec_mvd(h_dec, aec, 1);
-                    pmvr_mv[0] = mvd[0] + pmv[0];
-                    pmvr_mv[1] = mvd[1] + pmv[1];
-                    pmvr_mvd[0] = Clip3(-32768, 32767, mvd[0]);
-                    pmvr_mvd[1] = Clip3(-32768, 32767, mvd[1]);
+                    pmvr_mv[0] = (i16s_t) (mvd[0] + pmv[0]);
+                    pmvr_mv[1] = (i16s_t) (mvd[1] + pmv[1]);
+                    pmvr_mvd[0] = (i16s_t) Clip3(-32768, 32767, mvd[0]);
+                    pmvr_mvd[1] = (i16s_t) Clip3(-32768, 32767, mvd[1]);
                 }
 
                 if (h_dec->seq->b_pmvr_enabled && b8pdir[2 * j0 + i0] != SYM && b8pdir[2 * j0 + i0] != DUAL) {
@@ -2516,7 +2516,7 @@ void read_coeffs(avs2_dec_t *h_dec)
 
                     sum = Clip3(0 - (1 << 15), (1 << 15) - 1,  sum);
 
-                    coef_y[j * bsize_x + i] = sum;
+                    coef_y[j * bsize_x + i] = (coef_t) sum;
                 }
                 if (pairs == DCT_PairsInCG[DCT_CGNum - iCG - 1]) {
                     coef_ctr |= 0xf;
@@ -2603,7 +2603,7 @@ void read_coeffs(avs2_dec_t *h_dec)
 
                         sum = Clip3(0 - (1 << 15), (1 << 15) - 1, sum);
 
-                        coef_y[j * bsize_x + i] = sum;
+                        coef_y[j * bsize_x + i] = (coef_t) sum;
                     }
                     if (pairs == DCT_PairsInCG[DCT_CGNum - iCG - 1]) {
                         coef_ctr |= 0xf;

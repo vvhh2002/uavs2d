@@ -211,7 +211,7 @@ int alf_buf_create(avs2_dec_t *h_dec, seq_info_t *seq)
         yIndexOffset = yIndex * 4 ;
         for (g = 0; g < img_width; g = g + 4) {
             xIndex = (xInterval == 0) ? (3) : (Clip_post(3, g / xInterval));
-            pvar[g >> 2] = regionTable[yIndexOffset + xIndex];
+            pvar[g >> 2] = (char_t) regionTable[yIndexOffset + xIndex];
         }
         pvar += i_b4;
     }

@@ -67,7 +67,7 @@ static unsigned int unary_bin_decode(aec_core_t * aec, aec_ctx_t * ctx, int ctx_
     unsigned int symbol;
     aec_ctx_t * ictx;
 
-    symbol = !biari_decode_symbol(aec, ctx);
+    symbol = (unsigned int) !biari_decode_symbol(aec, ctx);
 
     if (symbol == 0) {
         return 0;
@@ -615,7 +615,7 @@ int aec_cbp(avs2_dec_t *h_dec, aec_core_t * aec)
             cbp_bit = readCBP_BIT_AEC(h_dec, 4, aec);
         }
         if (cbp_bit == 0) {
-            cu_loc_dat->trans_size = biari_decode_symbol(aec, aec->syn_ctx.tu_contexts);
+            cu_loc_dat->trans_size = (char_t) biari_decode_symbol(aec, aec->syn_ctx.tu_contexts);
 
             if (cu_loc_dat->trans_size == 0) {
                 if (biari_decode_symbol(aec, ctx) == 0) {
@@ -653,7 +653,7 @@ int aec_cbp(avs2_dec_t *h_dec, aec_core_t * aec)
             cbp = 0;
         }
     } else {
-        cu_loc_dat->trans_size = cu->cuType == I16MB ? 0 : 1;
+        cu_loc_dat->trans_size = (char_t) (cu->cuType == I16MB ? 0 : 1);
 
         /* luma */
         if (cu->cuType == I16MB) {

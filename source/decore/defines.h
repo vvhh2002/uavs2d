@@ -48,11 +48,12 @@ typedef unsigned int       i32u_t;
 typedef unsigned short     i16u_t;
 typedef unsigned char      uchar_t;
 
-#if defined(__ANDROID__)
-#else
+#if defined(__linux__)
 #ifndef _INTPTR_T_DEFINED
-//typedef i64s_t intptr_t;
+typedef i64s_t intptr_t;
 #endif
+#else
+
 #endif
 
 #if COMPILE_10BIT
