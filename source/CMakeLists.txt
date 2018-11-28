@@ -27,6 +27,7 @@ if (TARGET_ARCH STREQUAL "x86_64")
 endif ()
 
 if (TARGET_ARCH STREQUAL "aarch64")
+    enable_language(ASM)
     set(CORE_SRC
             decoder/AEC.c
             decoder/block.c
@@ -75,14 +76,14 @@ endif ()
 
 add_library(uavs2d ${DIR_UAVS2D_SRC})
 if (TARGET_ARCH STREQUAL "aarch64")
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_sao_neon.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_pixel.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/asm.S PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_inter_pred.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_idct.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_alf.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_deblock.s PROPERTY LANGUAGE C)
-    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_intra_pred.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_sao_neon.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_pixel.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/asm.S PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_inter_pred.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_idct.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_alf.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_deblock.s PROPERTY LANGUAGE C)
+#    set_property(SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/decore/neon/android_intra_pred.s PROPERTY LANGUAGE C)
 endif()
 set_property(TARGET uavs2d PROPERTY C_STANDARD 99)
 
