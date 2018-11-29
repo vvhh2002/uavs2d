@@ -5,7 +5,7 @@
 *  Project Leader: Ronggang Wang <rgwang@pkusz.edu.cn>
 *
 *  Main Authors: Zhenyu Wang <wangzhenyu@pkusz.edu.cn>, Kui Fan <kuifan@pku.edu.cn>
-*               Shenghao Zhang <1219759986@qq.com>£¬ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
+*               Shenghao Zhang <1219759986@qq.com>ï¿½ï¿½ Bingjie Han, Kaili Yao, Hongbin Cao,  Yueming Wang,
 *               Jing Su, Jiaying Yan, Junru Li
 *
 * This program is free software; you can redistribute it and/or modify
@@ -762,7 +762,7 @@ AVS2_API void *__cdecl uavs2d_lib_create(int frm_threads, int rec_threads)
     
     #elif defined(__aarch64__)
 
-    #elseif defined(__ARM_ARCH_7A__)
+    #elif defined(__ARM_ARCH_7A__)
     com_init_neon128();
     #endif
 #endif
