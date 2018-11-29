@@ -51,6 +51,11 @@ if (TARGET_ARCH STREQUAL "aarch64")
             decore/threadpool.c
             decore/transform.c
             )
+
+    set(DIR_UAVS2D_SRC  ${CORE_SRC})
+endif ()
+
+if (TARGET_ARCH STREQUAL "armv7a")
     set(CODE_ARM_SRC
             decore/neon/android_sao_neon.s
             decore/neon/android_sao.c
@@ -63,12 +68,11 @@ if (TARGET_ARCH STREQUAL "aarch64")
             decore/neon/android_deblock.s
             decore/neon/android_intra_pred.s
             )
-    set(DIR_UAVS2D_SRC ${CODE_ARM_SRC} ${CORE_SRC})
+    set(DIR_UAVS2D_SRC ${CODE_ARM_SRC})
 endif ()
 
-
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -march=native")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 ")
 else ()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -march=native")
 

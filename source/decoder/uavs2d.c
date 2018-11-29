@@ -761,11 +761,9 @@ AVS2_API void *__cdecl uavs2d_lib_create(int frm_threads, int rec_threads)
     }
     
     #elif defined(__aarch64__)
-    
-    com_init_neon128();
 
-    #else
-    
+    #elseif defined(__ARM_ARCH_7A__)
+    com_init_neon128();
     #endif
 #endif
 
