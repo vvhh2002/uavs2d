@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 
 project(uavs2d)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4.1")
+
 aux_source_directory(./decoder DIR_UAVS2D_SRC)
 aux_source_directory(./decore/x86 DIR_X86_SRC)
 aux_source_directory(./decore/x86_256 DIR_X86_256_SRC)
@@ -73,6 +73,7 @@ endif ()
 
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 ")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse -msse2 -msse3 -mssse3 -msse4 -msse4.1 -msse4.2 -mavx -mavx2")
 else ()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -mavx2 -march=native")
 
